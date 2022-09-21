@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+<!-- HTML comment -->
+{# comment #}
+<div class="grid-container">
+  <div class="grid-x grid-padding-x">
+    <div class="large-12 cell">
+      <img class="csuclogo" src="{% static 'images/csuc-logo.svg'%}" alt="CSU, Chico logo">
+      <h1>{{ title}} {{ msg }}!</h1>
+      <p>My first name is {{ first_name }}. My last name is {{ last_name }}.
+      </p>
+    </div>
+  </div>
+  <div class="grid-x grid-padding-x">
+    <div class="large-4 medium-3 small-3 cell">
+      {% if prev_page >= 0 %}
+      <a href="/{{ prev_page }}">Prev</a>
+      {% endif %}
+      <a href="/{{ next_page }}">Next</a>
+    </div>
+    <div class="large-4 medium-6 small-9 cell">
+      <ol>
+        {% for elem in page_list %}
+        <li>{{ elem }}</li>
+        {% endfor %}
+      </ol>
+    </div>
+    <div class="large-4 medium-3 small-12 cell">
+      <ul>
+        {% for num in squares_list %}
+        <li>{{ num }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/app.js'%}"></script>
+{% endblock %}
