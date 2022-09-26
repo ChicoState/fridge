@@ -17,7 +17,7 @@ def index(request, page=0):
     context = {
         'first_name': 'Fri',
         'last_name': 'dge',
-        'title': 'CSCI430',
+        'title': 'Fridge',
         'msg': 'Hello World',
         'page_list': page_list,
         'squares_list': squares_list,
