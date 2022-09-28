@@ -23,8 +23,8 @@
     <table class="table table-striped">
       <tr>
         <th>Description</th>
-        <th>price</th>
-        <th>expiredate</th>
+        <th>Price</th>
+        <th>ExpirationDate</th>
         <th></th>
       </tr>
       {% for row in table_data %}
@@ -66,7 +66,13 @@
           </div>
 
 
-<h2>Here are some links to Recipes</h2>
+<h2>Here are a few links to sites with great recipes!</h2>
+<a href="https://www.simplyrecipes.com/" target="_blank">SimplyRecipes</a>
+<br>
+<a href="https://www.allrecipes.com/recipes/" target="_blank">AllRecipes</a>
+<br>
+<a href="https://www.myrecipes.com/" target="_blank">MyRecipes</a>
+
 {% endblock %}
 {% block scripts %}
 <script src="{%static 'js/app.js' %}"></script>
