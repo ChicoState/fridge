@@ -24,4 +24,5 @@ urlpatterns = [
     path('join/', myapp_views.join),
     path('logout/', myapp_views.user_logout),
     path('<int:page>/', myapp_views.index, name='index'),
+    path('add/', myapp_views.add),
 ]
