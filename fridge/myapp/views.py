@@ -15,7 +15,6 @@ from django.contrib.auth.models import User
 
 @login_required(login_url='/login/')
 def index(request, page=0):
-
     if (request.method == "GET" and "delete" in request.GET):
         id = request.GET["delete"]
         foodItem.objects.filter(id=id).delete()
