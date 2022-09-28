@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+{% if not table_data %}
+<p>There are no budget items at the moment.</p>
+{% else %}
+
+<table class="table table-striped">
+  <tr>
+
+    <th></th>
+  </tr>
+  {% for row in table_data %}
+  <tr>
+    <td>{{ row.description }}</td>
+
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+{% if table_data %}
+
+<body onload="sum()">
+<p id="p1"></p>
+{% endif %}
+</html>

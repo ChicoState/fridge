@@ -15,3 +15,13 @@ document.querySelector('ol').addEventListener('click', function(){
 document.querySelector('ul').addEventListener('click', function(){
   alert("You poked an unordered list!!!!!!!!!!");
 });
+
+function confirmDeleteModal(id) {
+  $('#deleteModal').modal();
+  $('#deleteButton').html('<a href="?delete='+id+'" class="btn btn-danger" onclick="return closeDeleteModal('+id+')">Delete</a>');
+}
+
+function closeDeleteModal(id) {
+  $('#deleteModal').modal('hide');
+  return true
+}

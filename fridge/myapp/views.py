@@ -7,24 +7,35 @@ from myapp.forms import JoinForm, LoginForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
+
+from myapp.models import foodItem
+from myapp.forms import FoodItemForm
+from django.contrib.auth.models import User
 # Create your views here.
 
 @login_required(login_url='/login/')
 def index(request, page=0):
-    #return HttpResponse("CSCI430 Hello World")
-    page_list = list(range(page*10, page*10 + 10, 1))
-    squares_list = [x**2 for x in range(10)]
-    context = {
-        'first_name': 'Fri',
-        'last_name': 'dge',
-        'title': 'Fridge',
-        'msg': 'Hello World',
-        'page_list': page_list,
-        'squares_list': squares_list,
-        'prev_page': page - 1,
-        'next_page': page + 1,
-    }
-    return render(request, "myapp/index.html", context=context)
+
+    if (request.method == "GET" and "delete" in request.GET):
+        id = request.GET["delete"]
+        foodItem.objects.filter(id=id).delete()
+        return redirect("/")
+    else:
+        table_data = foodItem.objects.filter(user=request.user)
+        page_list = list(range(page*10, page*10 + 10, 1))
+        squares_list = [x**2 for x in range(10)]
+        context = {
+            'first_name': 'Fri',
+            'last_name': 'dge',
+            'title': 'Fridge',
+            'msg': 'Hello World',
+            'page_list': page_list,
+            'squares_list': squares_list,
+            'prev_page': page - 1,
+            'next_page': page + 1,
+            "table_data": table_data,
+        }
+        return render(request, "myapp/index.html", context=context)
 
 
 def join(request):
@@ -83,3 +94,32 @@ def user_logout(request):
     logout(request)
     # Return to homepage.
     return redirect("/")
+
+
+
+
+@login_required(login_url='/login/')
+def add(request):
+    if (request.method == "POST"):
+        if ("add" in request.POST):
+            add_form = FoodItemForm(request.POST)
+            if (add_form.is_valid()):
+                description = add_form.cleaned_data["description"]
+                price = add_form.cleaned_data['price']
+                expiredate = add_form.cleaned_data['expiredate']
+                user = User.objects.get(id=request.user.id)
+                foodItem(user=user, description=description, price=price, expiredate=expiredate).save()
+                return redirect("/")
+            else:
+                context = {
+                "form_data": add_form
+                }
+                return render(request, 'myapp/add.html', context)
+        else:
+                # Cancel
+            return redirect("/")
+    else:
+        context = {
+                "form_data": FoodItemForm()
+                        }
+    return render(request, 'myapp/add.html', context)

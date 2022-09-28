@@ -10,40 +10,64 @@
 <div class="grid-container">
   <div class="grid-x grid-padding-x">
     <div class="large-12 cell">
-
-      <img class="csuclogo" src="{%static 'images/csuc-logo.svg' %}" alt="CSU, Chico logo"/>
       <h2>View of Grocery items</h2>
-      <br>
-      <h2>List of some Recipes</h2>
-      <p>My first name is {{ first_name }}. My last name is {{ last_name }}.
-      </p>
-    </div>
-  </div>
-  <div class="grid-x grid-padding-x">
-    <div class="large-4 medium-3 small-3 cell">
-      {% if prev_page >= 0 %}
-      <a href="/{{ prev_page }}">Prev</a>
-      {% endif %}
-      <a href="/{{ next_page }}">Next</a>
-    </div>
-    <div class="large-4 medium-6 small-9 cell">
-      <ol>
-        {% for elem in page_list %}
-        <li>{{ elem }}</li>
-        {% endfor %}
-      </ol>
-    </div>
-    <div class="large-4 medium-3 small-12 cell">
-      <ul>
-        {% for num in squares_list %}
-        <li>{{ num }}</li>
-        {% endfor %}
-      </ul>
-    </div>
-  </div>
-</div>
-{% endblock %}
+<div class="jumbotron">
 
+    <form action="add/" method="GET">
+      <input type="submit" class="btn btn-primary" value="Add item">
+    </form>
+    {% if not table_data %}
+    <p>There are no g  items at the moment.</p>
+    {% else %}
+
+    <table class="table table-striped">
+      <tr>
+        <th>Description</th>
+        <th>price</th>
+        <th>expiredate</th>
+        <th></th>
+      </tr>
+      {% for row in table_data %}
+      <tr>
+        <td>{{ row.description }}</td>
+        <td>{{ row.price }}</td>
+        <td id="t1">{{ row.expiredate }}</td>
+
+        <td>
+            <a class="btn btn-primary" href="#" onclick="confirmDeleteModal({{ row.id }})">Delete</a></td>
+
+      </tr>
+      {% endfor %}
+    </table>
+    {% endif %}
+    {% if table_data %}
+
+    <body onload="sum()">
+    <p id="p1"></p>
+    {% endif %}
+  </div>
+
+  <div id="deleteModal" class="modal fade" role='dialog'>
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                          <h4 class="modal-title">Delete Item</h4>
+                      </div>
+                      <div class="modal-body">
+                          <p>Do you really want to delete this item?</p>
+                      </div>
+                      <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                          <span id='deleteButton'></span>
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+
+<h2>Here are some links to Recipes</h2>
+{% endblock %}
 {% block scripts %}
-<script src="{% static '/js/app.js'%}"></script>
+<script src="{%static 'js/app.js' %}"></script>
 {% endblock %}
