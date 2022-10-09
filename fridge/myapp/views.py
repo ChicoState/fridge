@@ -1,3 +1,5 @@
+import datetime
+from urllib import request
 from django.shortcuts import render
 from django.http import HttpResponse
 from myapp.forms import JoinForm
@@ -87,14 +89,16 @@ def user_login(request):
         #Nothing has been provided for username or password.
         return render(request, 'myapp/login.html', {"login_form": LoginForm})
 
+# def index(request):
+#     form = FoodItemForm()
+#     return render(request, 'myapp/index.html',{'form':form})
+
 @login_required(login_url='/login/')
 def user_logout(request):
     # Log out the user.
     logout(request)
     # Return to homepage.
     return redirect("/")
-
-
 
 
 @login_required(login_url='/login/')
@@ -122,3 +126,4 @@ def add(request):
                 "form_data": FoodItemForm()
                         }
     return render(request, 'myapp/add.html', context)
+

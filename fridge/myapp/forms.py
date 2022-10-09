@@ -1,7 +1,10 @@
+import datetime
+from logging import PlaceHolder
 from django import forms
 from django.core import validators
 from django.contrib.auth.models import User
-from myapp.models import foodItem
+# from myapp.models import foodItem
+from .models import foodItem
 
 
 class JoinForm(forms.ModelForm):
@@ -20,8 +23,17 @@ class LoginForm(forms.Form):
 
 class FoodItemForm(forms.ModelForm):
     description = forms.CharField(widget=forms.TextInput(attrs={'size': '80'}))
-    expiredate = forms.IntegerField(widget=forms.TextInput(attrs={'size': '80'}))
-    price = forms.IntegerField(widget=forms.TextInput(attrs={'size': '80'}))
+    expiredate = forms.DateField(
+        input_formats = ['%m-%d-%Y'],
+        widget = forms.DateInput(
+            attrs={
+                'type': 'datetime-local',
+                'class': 'form-control'},
+            format='%m-%d-%Y')
+    )
+    # expiredate = forms.DateField(
+    #     widget=forms.DateInput(attrs={'size': '80'})) 
+    price = forms.FloatField(widget=forms.TextInput(attrs={'size': '80'}))
     class Meta():
        model = foodItem
        fields = ('description', 'expiredate', 'price')
