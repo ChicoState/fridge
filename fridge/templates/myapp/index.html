@@ -7,6 +7,7 @@
 {% block content %}
 <!-- HTML comment -->
 {# comment #}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="grid-container">
   <div class="grid-x grid-padding-x">
     <div class="large-12 cell">
@@ -23,20 +24,22 @@
     <table class="table table-striped">
       <tr>
         <th>Description</th>
+        <th>Quantity</th>
         <th>Price</th>
         <th>ExpirationDate</th>
-        <th></th>
       </tr>
       {% for row in table_data %}
       <tr>
         <td>{{ row.description }}</td>
-        <td>{{ row.price }}</td>
+        <td>{{ row.quantity }}</td>
+        <td>${{ row.price }}</td>
         <td id="t1">{{ row.expiredate }}</td>
-
         <td>
-            <a class="btn btn-primary" href="#" onclick="confirmDeleteModal({{ row.id }})">Delete</a></td>
-
+            <a class="btn btn" href="#" onclick="confirmDeleteModal({{ row.id }})"><i class="fa fa-edit" style="font-size:25px;color:green"></i></a>
+            <a class="btn btn" href="#" onclick="confirmDeleteModal({{ row.id }})"><i class="fa fa-trash-o" style="font-size:25px;color:red"></i></a>
+        </td>
       </tr>
+      {% comment %} <a class="btn btn" href="#" onclick="confirmDeleteModal({{ row.id }})"><i class="fa fa-trash-o" style="font-size:25px;color:red"></i></a></td> {% endcomment %}
       {% endfor %}
     </table>
     {% endif %}

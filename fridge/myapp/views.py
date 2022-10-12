@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpResponse
 from myapp.forms import JoinForm
@@ -12,6 +13,7 @@ from myapp.models import foodItem
 from myapp.forms import FoodItemForm
 from django.contrib.auth.models import User
 # Create your views here.
+
 
 @login_required(login_url='/login/')
 def index(request, page=0):
@@ -51,11 +53,11 @@ def join(request):
             return redirect("/")
         else:
             # Form invalid, print errors to console
-            page_data = { "join_form": join_form }
+            page_data = {"join_form": join_form}
             return render(request, 'myapp/join.html', page_data)
     else:
         join_form = JoinForm()
-        page_data = { "join_form": join_form }
+        page_data = {"join_form": join_form}
         return render(request, 'myapp/join.html', page_data)
 
 
@@ -70,10 +72,10 @@ def user_login(request):
             user = authenticate(username=username, password=password)
             # If we have a user
             if user:
-                #Check it the account is active
+                # Check it the account is active
                 if user.is_active:
                     # Log the user in.
-                    login(request,user)
+                    login(request, user)
                     # Send the user back to homepage
                     return redirect("/")
                 else:
@@ -81,11 +83,13 @@ def user_login(request):
                     return HttpResponse("Your account is not active.")
             else:
                 print("Someone tried to login and failed.")
-                print("They used username: {} and password: {}".format(username,password))
+                print("They used username: {} and password: {}".format(
+                    username, password))
                 return render(request, 'myapp/login.html', {"login_form": LoginForm})
     else:
-        #Nothing has been provided for username or password.
+        # Nothing has been provided for username or password.
         return render(request, 'myapp/login.html', {"login_form": LoginForm})
+
 
 @login_required(login_url='/login/')
 def user_logout(request):
@@ -95,8 +99,6 @@ def user_logout(request):
     return redirect("/")
 
 
-
-
 @login_required(login_url='/login/')
 def add(request):
     if (request.method == "POST"):
@@ -104,10 +106,13 @@ def add(request):
             add_form = FoodItemForm(request.POST)
             if (add_form.is_valid()):
                 description = add_form.cleaned_data["description"]
+                quantity = add_form.cleaned_data['quantity']
                 price = add_form.cleaned_data['price']
                 expiredate = add_form.cleaned_data['expiredate']
                 user = User.objects.get(id=request.user.id)
-                foodItem(user=user, description=description, price=price, expiredate=expiredate).save()
+                
+                foodItem(user=user, description=description, quantity=quantity,
+                         price=price, expiredate=expiredate).save()
                 return redirect("/")
             else:
                 context = {
