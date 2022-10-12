@@ -30,7 +30,7 @@
     <td style="color:red">{{ row2 }}</td>
 
     <td>
-        
+
 
   </tr>
   {% endfor %}
@@ -42,17 +42,6 @@
 </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
 
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -75,6 +64,7 @@
         <th>Quantity</th>
         <th>Price</th>
         <th>ExpirationDate</th>
+        <th></th>
       </tr>
       {% for row in table_data %}
       <tr>
@@ -91,6 +81,7 @@
       {% endfor %}
     </table>
     {% endif %}
+    <p><b>Total cost is ${{ totalcost }}</b></p>
     {% if table_data %}
 
     <body onload="sum()">
