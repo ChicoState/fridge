@@ -7,6 +7,54 @@
 {% block content %}
 <!-- HTML comment -->
 {# comment #}
+
+
+<div class="grid-container">
+  <div class="grid-x grid-padding-x">
+    <div class="large-12 cell">
+      <h2>View of Expiring soon</h2>
+<div class="jumbotron">
+{% if not resultexpire %}
+<p>There are no expiring  items at the moment.</p>
+{% else %}
+
+<table class="table table-striped">
+  <tr>
+    <th>Description </th>
+    <th>ExpirationDate</th>
+    <th></th>
+  </tr>
+  {% for row,row2 in resultexpire %}
+  <tr>
+    <td id="t1" style="color:red">{{ row }}  </td>
+    <td style="color:red">{{ row2 }}</td>
+
+    <td>
+        
+
+  </tr>
+  {% endfor %}
+</table>
+{% endif %}
+
+
+</div>
+</div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <div class="grid-container">
   <div class="grid-x grid-padding-x">
