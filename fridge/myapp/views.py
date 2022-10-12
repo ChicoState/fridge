@@ -33,6 +33,10 @@ def index(request, page=0):
         for i in days_table:
             if datetime.timedelta(days=3) >=  days_table[i]:
                 resultexpire[i] = days_table[i]
+        prices= foodItem.objects.filter(user=request.user).values('price')
+        totalcost = 0
+        for p in prices:
+            totalcost += p['price']
         table_data = foodItem.objects.filter(user=request.user)
         page_list = list(range(page*10, page*10 + 10, 1))
         squares_list = [x**2 for x in range(10)]
@@ -47,6 +51,7 @@ def index(request, page=0):
             'next_page': page + 1,
             "table_data": table_data,
             "resultexpire": resultexpire.items(),
+            "totalcost": totalcost,
         }
         return render(request, "myapp/index.html", context=context)
 
