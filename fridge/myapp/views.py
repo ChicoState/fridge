@@ -1,4 +1,4 @@
-from datetime import datetime
+#from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpResponse
 from myapp.forms import JoinForm
@@ -12,6 +12,8 @@ from django.urls import reverse
 from myapp.models import foodItem
 from myapp.forms import FoodItemForm
 from django.contrib.auth.models import User
+from datetime import date
+import datetime
 # Create your views here.
 
 
@@ -22,6 +24,15 @@ def index(request, page=0):
         foodItem.objects.filter(id=id).delete()
         return redirect("/")
     else:
+        from_date = date.today()
+        record= foodItem.objects.filter(user=request.user).values('description', 'expiredate')
+        days_table = {}
+        for dates in record:
+            days_table[dates['description']] = dates['expiredate']-from_date
+        resultexpire = {}
+        for i in days_table:
+            if datetime.timedelta(days=3) >=  days_table[i]:
+                resultexpire[i] = days_table[i]
         table_data = foodItem.objects.filter(user=request.user)
         page_list = list(range(page*10, page*10 + 10, 1))
         squares_list = [x**2 for x in range(10)]
@@ -35,6 +46,7 @@ def index(request, page=0):
             'prev_page': page - 1,
             'next_page': page + 1,
             "table_data": table_data,
+            "resultexpire": resultexpire.items(),
         }
         return render(request, "myapp/index.html", context=context)
 
@@ -110,7 +122,7 @@ def add(request):
                 price = add_form.cleaned_data['price']
                 expiredate = add_form.cleaned_data['expiredate']
                 user = User.objects.get(id=request.user.id)
-                
+
                 foodItem(user=user, description=description, quantity=quantity,
                          price=price, expiredate=expiredate).save()
                 return redirect("/")
