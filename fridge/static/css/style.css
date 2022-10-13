@@ -3,42 +3,67 @@ h1 {
     color: #006400;
     font-size: 60px;
     text-align: center;
-  }
+}
   
-  body {
-    /* width: 600px; */
-    /* margin: 0 auto; */
-    background-color: #bdeadc;
-    /* padding: 0 20px 20px 20px; */
-    /*border: 5px solid black;*/
-  }
-  
-  /* id style */
-  #cins465name {
-    color: green;
-  }
-  
-  /* class style */
-  .csuclogo {
-    height: 50px;
-    margin: 20px auto;
-  }
-  
-  .fonttext {
-    font-family: cursive;
-  }
-  
-  .centertext {
-    text-align: center;
-  }
-  
-  .myimages {
-     width: 400px;
-    /*margin: 0 auto;
-    padding: 0 20px 20px 20px; */
-    /*border: 5px solid black;*/
-  }
-  
-  .button {
-    background-color: #006400;
-  }
+body {
+  background-image: url('../images/Kitchen6.jpg');
+  background-position: center; 
+  background-size: cover; 
+  background-color: white;
+  background-repeat:no-repeat;
+}
+
+/* id style */
+#welcome {
+  background-image: linear-gradient(to right, black, grey 400px, black 800px);
+  background-size: 800px 100%;
+  background-position: 50% 100%;
+  background-repeat: no-repeat;
+  margin-right: 600px;
+  margin-left: 600px;
+  color: white;
+  font-size: 60px;
+  text-align: center;
+  /* background-color: lightgrey; */
+  font-family: "Candara";
+}
+
+#style1 {
+  background-color: lightgrey;
+  /* border: 2px solid black; */
+  /* padding: 0 20px 20 px 20 px; */
+}
+
+
+/* class style */
+.div1 {
+  background-color: lightgrey;
+  margin: auto;
+  width: 30%;
+  border: 2px solid black;
+  padding: 10px;
+}
+
+.div2 {
+  margin: auto;
+  width: 70%;
+}
+
+.fonttext {
+  font-family: cursive;
+}
+
+.centertext {
+  text-align: center;
+}
+
+.myimages {
+    width: 400px;
+  /*margin: 0 auto;
+  padding: 0 20px 20px 20px; */
+  /*border: 5px solid black;*/
+}
+
+.button {
+  background-color: #006400;
+}

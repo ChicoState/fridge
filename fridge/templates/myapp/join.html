@@ -1,21 +1,27 @@
-<html>
-  <head>
-    {% include "myapp/navigation.html"%}
-    {% include "myapp/bootstrap.html"%}
-  </head>
-  <body>
-    <div class="container">
-      <div class = "jumbotron">
-        <h1>Join</h1>
-        <form method="POST">{% csrf_token %}
-          <table>
-            {{ join_form.as_table }}
-            <tr><td>
-              <input type="submit" class="btn btn-primary" value = "Join"/>
-            </td></tr>
-          </table>
+{% extends 'myapp/base.html' %}
+{% load static %}
+{% block title %}
+Join
+{% endblock %}
+
+{% block content %}
+<h1 id="welcome"> REGISTER</h1>
+<br><br>
+<body>
+  <!-- <div class="grid-container"> -->
+  <div class="div1">
+    <div class="grid-x grid-padding-x">
+      <!-- <div class="large-4 medium-6 small-12 large-offset-4 medium-offset-3 cell"> -->
+        <div class="div2">
+        <!-- <h1>Join</h1> -->
+        <form action="/login/" method="POST">
+          {% csrf_token %}
+          {{ join_form }}
+          <input type="submit" class="button expanded" value = "Join"/>
         </form>
       </div>
     </div>
-  </body>
-</html>
+  </div>
+  </div>
+</body>
+{% endblock %}

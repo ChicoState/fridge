@@ -25,4 +25,6 @@ urlpatterns = [
     path('logout/', myapp_views.user_logout),
     path('<int:page>/', myapp_views.index, name='index'),
     path('add/', myapp_views.add),
+    path('meals/', myapp_views.meals),
+    path('recipes/', myapp_views.recipes),
 ]

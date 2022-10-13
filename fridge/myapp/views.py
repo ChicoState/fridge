@@ -144,3 +144,23 @@ def add(request):
                 "form_data": FoodItemForm()
                         }
     return render(request, 'myapp/add.html', context)
+
+
+@login_required(login_url='/login/')
+def meals(request):
+    current_user = request.user
+    context = {
+        'title': "Your Meals",
+        'current_user': current_user,
+    }
+    return render(request, 'myapp/meals.html', context=context)
+
+
+@login_required(login_url='/login/')
+def recipes(request):
+    current_user = request.user
+    context = {
+        'title': "Reccomended Recipes",
+        'current_user': current_user,
+    }
+    return render(request, 'myapp/recipes.html', context=context)
