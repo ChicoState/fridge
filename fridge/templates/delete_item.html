@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+    <div class="container mt-5">
+
+        <div class="row justify-content-center ">
+            <div class="col-md-6 col-sm-4 bg-light">
+
+                <h4 class="title">Confirm item deletion</h4>
+                <form method="POST">
+                    {% csrf_token %}
+                    <p class="lead">Are you sure you want to delete the item
+                        <u><strong>{{ object.food_title }}</strong>?</u></p>
+                    <div class=" mt-2 mb-3 ">
+                        <a href="">
+                            <button type="submit" class="btn btn-danger">Delete item</button>
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

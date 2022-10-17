@@ -1,44 +1,254 @@
 /* element style */
+
 h1 {
     color: #006400;
     font-size: 60px;
     text-align: center;
-  }
-  
-  body {
-    /* width: 600px; */
-    /* margin: 0 auto; */
-    background-color: #bdeadc;
-    /* padding: 0 20px 20px 20px; */
-    /*border: 5px solid black;*/
-  }
-  
-  /* id style */
-  #cins465name {
-    color: green;
-  }
-  
-  /* class style */
-  .csuclogo {
-    height: 50px;
-    margin: 20px auto;
-  }
-  
-  .fonttext {
-    font-family: cursive;
-  }
-  
-  .centertext {
+}
+
+h6 {
+    color: aliceblue;
+}
+
+body {
+    background-image: url('../images/Kitchen6.jpg');
+    background-position: center;
+    background-size: cover;
+    background-color: white;
+    background-repeat: no-repeat;
+}
+
+
+/* id style */
+
+#welcome {
+    background-image: linear-gradient(to right, black, grey 400px, black 800px);
+    background-size: 800px 100%;
+    background-position: 50% 100%;
+    background-repeat: no-repeat;
+    margin-right: 600px;
+    margin-left: 600px;
+    color: white;
+    font-size: 60px;
     text-align: center;
-  }
-  
-  .myimages {
-     width: 400px;
+    /* background-color: lightgrey; */
+    font-family: "Candara";
+}
+
+#style1 {
+    background-color: lightgrey;
+    /* border: 2px solid black; */
+    /* padding: 0 20px 20 px 20 px; */
+}
+
+
+/* class style */
+
+.div1 {
+    background-color: lightgrey;
+    margin: auto;
+    width: 30%;
+    border: 2px solid black;
+    padding: 10px;
+}
+
+.div2 {
+    margin: auto;
+    width: 70%;
+}
+
+.fonttext {
+    font-family: cursive;
+}
+
+.login {
+    color: #006400;
+}
+
+.centertext {
+    text-align: center;
+}
+
+.myimages {
+    width: 400px;
     /*margin: 0 auto;
-    padding: 0 20px 20px 20px; */
+  padding: 0 20px 20px 20px; */
     /*border: 5px solid black;*/
-  }
-  
-  .button {
+}
+
+.button1 {
     background-color: #006400;
-  }
+    color: white;
+    width: 100%;
+}
+
+.card {
+    background-color: lightgrey;
+    margin: auto;
+    width: 70%;
+    border: 2px solid black;
+    padding: 10px;
+}
+
+.card2 {
+    background-color: lightgrey;
+    margin: auto;
+    width: 100%;
+    height: 100%;
+    border: 2px solid black;
+    padding: 10px;
+}
+
+.res {
+    height: 40px;
+    color: black;
+}
+
+
+/* .container2 {
+    width: 100%;
+} */
+
+
+/* .container {
+    height: 80px;
+} */
+
+.space {
+    width: 4px;
+    height: auto;
+    display: inline-block;
+}
+
+.button3 {
+    text-decoration: none;
+    border: 3px solid white;
+    color: transparent;
+    padding: 20px 60px;
+    font-size: 8px;
+    font-family: sans-serif;
+    letter-spacing: 5px;
+    transition: all 0.5s;
+    position: relative;
+}
+
+.button3:before {
+    content: "Item";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background: rgb(218, 50, 50);
+    font-size: 20px;
+    top: 0;
+    left: 100%;
+    font-family: sans-serif;
+    letter-spacing: 5px;
+    transition: all 1s;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    transform: scale(0) rotatey(0);
+    opacity: 0;
+}
+
+.button3:hover:before {
+    transform: scale(1) rotatey(360deg);
+    left: 0;
+    opacity: 1;
+}
+
+.button3:after {
+    content: "Search";
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    background: rgb(49, 49, 49);
+    font-size: 20px;
+    top: 0;
+    left: 0;
+    font-family: sans-serif;
+    letter-spacing: 5px;
+    transition: all 1s;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    transform: scale(1) rotatey(0);
+    opacity: 1;
+}
+
+.button3:hover:after {
+    transform: scale(0) rotatey(360deg);
+    left: -100%;
+    opacity: 0;
+}
+
+.searchinput {
+    width: 100%;
+    height: 100%;
+}
+
+.input-icons i {
+    position: absolute;
+}
+
+.input-icons {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.icon {
+    padding: 10px;
+    min-width: 40px;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+}
+
+.addbutton {
+    border-radius: 40px;
+    width: 80px;
+    height: 80px;
+    background-color: rgb(89, 89, 243);
+}
+
+.btn-group {
+    padding-right: 90px;
+}
+
+.topnav {
+    background-color: #333;
+    overflow: hidden;
+    margin-left: 120px;
+}
+
+
+/* Style the links inside the navigation bar */
+
+.topnav a {
+    float: left;
+    color: #f2f2f2;
+    text-align: center;
+    padding: 24px 26px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+.topnav a:hover {
+    background-color: #ddd;
+    color: black;
+}
+
+
+/* .topnav a.active {
+    background-color: #04AA6D;
+    color: white;
+} */
+
+.btn-group {
+    height: 70px;
+}

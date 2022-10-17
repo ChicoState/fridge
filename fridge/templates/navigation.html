@@ -1,0 +1,52 @@
+{% load static %}
+<script src="https://kit.fontawesome.com/be7f532f58.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<nav class="navbar navbar-dark" style="background-color: #34495E;">
+    <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+        <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
+            <use xlink:href="#bootstrap"></use>
+        </svg>
+    </a>
+    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+        <a href="/" class="nav-link px-2 text-white">
+            <h5><img src="{% static 'images/Fridge_logo.png' %}" alt="Fridge Logo" width="50" height="60">FRIDGE</h5>
+        </a>
+    </ul>
+    {% comment %} <div class="topnav">
+        <a class="active" href="#home">Home</a>
+        <a href="#news">News</a>
+        <a href="#contact">Contact</a>
+        <a href="#about">About</a>
+      </div> {% endcomment %}
+
+      {% if user.is_authenticated %}
+      <div class="topnav">
+        <a class="active" href="{% url 'item_list' %}"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="/meals/">Meals</a>
+        <a href="/recipes">Recipes</a>
+        <a href="#about"><i class="fa-solid fa-users"></i> About</a>
+        <a href="#about"><i class="fa-solid fa-phone"></i> Contact-us</a>
+      </div>
+      <div class="btn-group">
+        <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown"
+                aria-expanded="false">
+            Welcome back, {{ user.username|capfirst }}
+        </button>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'item_list' %}"><i class="fa-solid fa-house"></i> Home</a></li>
+            <li><a class="dropdown-item" href="{% url 'profile_update' %}"><i class="fa-solid fa-user"></i> My Profile</a></li>
+            <li><a class="dropdown-item" href="{% url 'password_change' %}"><i class="fa-sharp fa-solid fa-key"></i> Change password</a></li>
+            <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Log out</a></li>
+
+        </ul>
+    </div>
+    {% else %}
+    <a href="{% url 'login' %}" class="btn btn-outline-secondary me-2">Login</a>
+    <a href="{% url 'signup' %}" class="btn btn-warning ">Sign-up</a>
+    {% endif %}
+
+
+
+    </ul>
+  </div>
+</nav>
