@@ -9,12 +9,6 @@
             height: auto;
         }
 
-        .res {
-
-            overflow-y: auto;
-            width: 100%;
-        }
-
     </style>
 
 
@@ -103,8 +97,10 @@
                     {% endif %}
 
                     <td>
-                        <button type="button" class="btn btn-outline-primary">Edit</button>
-                        <button type="button" class="btn btn-outline-danger">Delete</button>
+                        <a href="{% url 'item_update' item.id %}"><i class="fa-solid fa-pen" style="color:#6BAD12;width: 30px; font-size:25px;"></i></a>
+                        <a href="{% url 'item_delete' item.pk %}"><i class="fa-solid fa-trash" style="color:#EC4747;width: 30px; font-size:25px;"></i></a>
+                        {% comment %} <a class="btn btn" href="#" onclick="confirmDeleteModal({{ row.id }})"><i class="fa fa-trash-o" style="font-size:25px;color:red"></i></a> {% endcomment %}
+
                     </td>
 
                     {% empty %}
