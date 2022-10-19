@@ -1,0 +1,17 @@
+*.log
+*.pot
+*.pyc
+__pycache__/
+__pycache__
+media_root
+static_root
+venv
+.idea/
+db.sqlite3
+
+.DS_STORE
+bin/
+include/
+pip-selfcheck.json
+.venv
+.mypy_cache/

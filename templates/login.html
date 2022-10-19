@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="container">
+    <div class="row justify-content-center mt-4 mb-4">
+        <div class="col-lg-6 col-md-8 col-sm-10">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title text-center ">Log in to your account</h3>
+                    <hr>
+
+                    <div>
+                        {% if form.errors %}
+                            <p>
+                                Your username and password didn't match.
+                                Please try again.
+                            </p>
+                        {% else %}
+                            <p>Please, use the following form to log-in:</p>
+                        {% endif %}
+                        <form method="post" action="." novalidate>
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ next }}">
+                            {% include 'includes/form.html' %}
+                            <div class="space">
+                            </div>
+                            <button type="submit" class="button expanded" id="login">Log in</button>
+                        </form>
+                    </div>
+                    <button style = "background-color: black;" type = "submit" class="secondary button expanded"><a href="{% url 'signup' %}">Sign up</a>
+                    </button>
+                </div>
+                <div class="text-center py-2">
+                    <small>
+                        <a href="{% url 'password_reset' %}" class="text-muted text-danger font-weight-bold">Forgot
+                            your
+                            password?</a>
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+{% endblock content %}
