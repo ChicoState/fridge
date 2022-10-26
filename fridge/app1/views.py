@@ -70,7 +70,7 @@ def search(request):
         form = ItemForm()
 
     # search
-    qs = Item.objects.all()
+    qs = Item.objects.filter(author=request.user.id).order_by('-timestamp')
     query = request.GET.get('q')
     if query:
         qs = qs.filter(
