@@ -84,13 +84,21 @@
                     <td>{{ item.valid_from }}</td>
                     <td>{{ item.valid_to }}</td>
 
-                    {% if item.valid_from < item.valid_to %}
+                    {% if item.status == 'Warning' %}
+                    <td class="text-warning">Warning</td>
+                    {% elif item.status == 'Good' %}
+                    <td class="text-success">Good</td>
+                    {% else %}
+                    <td class="text-danger">Expired</td>
+                    {% endif %}
+
+                    {% comment %} {% if item.valid_from < item.valid_to %}
                         <td class="text-success">Good</td>
                     {% elif item.valid_from <= item.valid_to %}
                         <td class="text-warning">Warning</td>
                     {% else %}
                         <td class="text-danger">Expired</td>
-                    {% endif %}
+                    {% endif %} {% endcomment %}
 
                     <td>
                         <a href="{% url 'item_update' item.id %}"><i class="fa-solid fa-pen" style="color:#6BAD12;width: 30px; font-size:25px;"></i></a>

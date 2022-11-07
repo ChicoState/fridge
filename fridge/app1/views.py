@@ -7,12 +7,13 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm
+from datetime import timedelta, date
 
 
 # Create your views here.
 @login_required
 def list_item(request):
-    items = Item.objects.filter(author=request.user.id).order_by('-timestamp')
+    items = Item.objects.filter(author=request.user.id).order_by('valid_to')
     # data  = Item.objects.filter(author=request.user.id)
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES)
@@ -26,6 +27,18 @@ def list_item(request):
             return redirect('item_list')
     else:
         form = ItemForm()
+
+    for item in items:
+        three_days_from_today = date.today()+timedelta(days=3)
+        today = date.today()
+        valid_to = item.valid_to
+
+        if valid_to < today:
+            item.status = 'Expired'
+        elif valid_to <= three_days_from_today:
+            item.status = 'Warning'
+        else:
+            item.status = 'Good'
 
     context = {
         'items': items,
@@ -60,35 +73,50 @@ def item_delete(request, pk):
 
 
 def search(request):
-    items = Item.objects.order_by('-timestamp')
+    items = Item.objects.order_by('valid_to')
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('item_list')
     else:
-        form = ItemForm()
-
+        form = ItemForm()    
+    
     # search
-    qs = Item.objects.filter(author=request.user.id).order_by('-timestamp')
+    qs = Item.objects.filter(author=request.user.id).order_by('valid_to')
     query = request.GET.get('q')
+
     if query:
         qs = qs.filter(
             Q(food_title__icontains=query) |
             Q(food_type__icontains=query) |
             Q(valid_from__icontains=query) |
-            Q(valid_to__icontains=query)
+            Q(valid_to__icontains=query) 
         ).distinct()
         if query and qs:
             messages.success(request, "Search Item found '%s' ...!!!" % (query))
         else:
             messages.warning(request, "Search Item Not found '%s' ...!!!" % (query),
                              "search another Item...???")
+    for item in items:
+        three_days_from_today = date.today()+timedelta(days=3)
+        today = date.today()
+        valid_to = item.valid_to
+
+        if valid_to < today:
+            item.status = 'Expired'
+        elif valid_to <= three_days_from_today:
+            item.status = 'Warning'
+        else:
+            item.status = 'Good'
+
     context = {
         "item_obj": qs,
-        'items': items,
+        "item_obj": items,
+        # "item_obj": qs,
         'form': form,
-    }
+        }
+        
     return render(request, 'search_results.html', context)
 
 

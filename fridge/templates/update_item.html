@@ -13,6 +13,8 @@
                     {% csrf_token %}
                     {{ form|crispy }}
                     <div class="modal-footer mt-2 mb-3 ">
+                        <a href="/"><button type="button_update" class="btn btn-secondary" data-bs-dismiss="modal">Close
+                        </button></a>
                         <button type="submit" class="btn btn-primary ">Update</button>
                     </div>
 

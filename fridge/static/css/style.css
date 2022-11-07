@@ -252,3 +252,26 @@ body {
 .btn-group {
     height: 70px;
 }
+
+.inline {
+    max-width: 400px;
+    margin: auto;
+}
+
+.input-icons i {
+    position: absolute;
+}
+
+.input-icons {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.icon {
+    padding: 10px;
+    min-width: 40px;
+}
+
+.button_update {
+    margin-left: 120px;
+}

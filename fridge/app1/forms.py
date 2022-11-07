@@ -5,13 +5,27 @@ from django.contrib.auth.models import User
 
 
 class ItemForm(forms.ModelForm):
+    valid_to = forms.DateField(
+        widget = forms.DateInput(
+            attrs={
+                'type': 'date',
+                'class': 'form-control'},
+            format='%m/%d/%Y')
+    )
+    valid_from = forms.DateField(
+        widget = forms.DateInput(
+            attrs={
+                'type': 'date',
+                'class': 'form-control'},
+            format='%m/%d/%Y')
+    )
     class Meta:
         model = Item
         fields = ('food_type', 'food_title', 'photos', 'price', 'quantity', 'valid_from', 'valid_to')
 
     def __init__(self, *args, **kwargs):
         super(ItemForm, self).__init__(*args, **kwargs)
-        self.fields['valid_from'].help_text = "Date Should Be like this -> yyyy-mm-dd --> 2022-10-09"
+        self.fields['valid_from'].help_text = "Example -> mm-dd-yyyy --> 05-07-2016"
 
 
 class SignUpForm(UserCreationForm):

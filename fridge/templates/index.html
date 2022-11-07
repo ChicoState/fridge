@@ -27,10 +27,16 @@
             <div class="container-fluid">
 
 
-                <form action="/search/" method="GET" class="d-flex">
+                <form action="/search/" method="GET" class="inline">
+                    <div class="input-icons">
+                    <i class="fa fa-search icon"></i>
                     <input style="width:400px; border-radius:20px;margin-top: 20px;" class="input-field" type="search" name="q" value="{{ request.GET.q }}"
                            placeholder="Search what's in your fridge" aria-label="Search">
-                    <button style="height:50px; margin-top: 15px; "class="button3" value="Search" type="submit">Search</button>
+                    {% comment %} <button style="height:50px; margin-top: 15px; "class="button3" value="Search" type="submit">Search</button> {% endcomment %}
+                    </div>
+                </form>
+                <form action="/search/" method="GET">
+                <button style="height:50px; margin-right: 600px;" class="button3" value="Search" type="submit">Search</button>
                 </form>
 
                 <button type="button" class="addbutton" data-bs-toggle="modal" data-bs-target="#exampleModal"
@@ -98,12 +104,12 @@
                     <td>{{ item.valid_from }}</td>
                     <td>{{ item.valid_to }}</td>
 
-                    {% if item.valid_to > item.timestamp.date.today %}
-                        <td class="text-success">Good</td>
-                    {% elif item.valid_to >= item.timestamp.date.today %}
-                        <td class="text-warning">Warning</td>
+                    {% if item.status == 'Warning' %}
+                    <td class="text-warning">Warning</td>
+                    {% elif item.status == 'Good' %}
+                    <td class="text-success">Good</td>
                     {% else %}
-                        <td class="text-danger">Expired</td>
+                    <td class="text-danger">Expired</td>
                     {% endif %}
 
                     <td>

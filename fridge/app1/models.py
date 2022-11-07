@@ -39,6 +39,7 @@ class Item(models.Model):
     valid_from = models.DateField(auto_now=False, auto_now_add=False)
     valid_to = models.DateField(auto_now=False, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(default='Good',max_length=100)
 
     class Meta:
         verbose_name_plural = "Items"
