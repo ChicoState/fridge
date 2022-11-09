@@ -18,7 +18,8 @@ def list_item(request):
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES)
         if form.is_valid():
-            obj = form.save(commit=False)  # Return an object without saving to the DB
+            # Return an object without saving to the DB
+            obj = form.save(commit=False)
             obj.author = Profile.objects.get(
                 id=request.user.id)  # Add an author field which will contain current user's id
             obj.save()  #
@@ -71,19 +72,21 @@ def item_delete(request, pk):
         return redirect('item_list')
     return render(request, 'delete_item.html', {'object': item})
 
-
+# Search Functionality
 def search(request):
     items = Item.objects.order_by('valid_to')
+    print(items)
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('item_list')
     else:
-        form = ItemForm()    
-    
-    # search
+        form = ItemForm()
+
+    # search items by title(name), type(dairy,meat etc...)
     qs = Item.objects.filter(author=request.user.id).order_by('valid_to')
+    print(qs)
     query = request.GET.get('q')
 
     if query:
@@ -91,14 +94,17 @@ def search(request):
             Q(food_title__icontains=query) |
             Q(food_type__icontains=query) |
             Q(valid_from__icontains=query) |
-            Q(valid_to__icontains=query) 
+            Q(valid_to__icontains=query)
         ).distinct()
         if query and qs:
-            messages.success(request, "Search Item found '%s' ...!!!" % (query))
+            messages.success(
+                request, "Search Item found '%s' ...!!!" % (query))
         else:
             messages.warning(request, "Search Item Not found '%s' ...!!!" % (query),
                              "search another Item...???")
-    for item in items:
+
+        
+    for item in qs:
         three_days_from_today = date.today()+timedelta(days=3)
         today = date.today()
         valid_to = item.valid_to
@@ -112,11 +118,9 @@ def search(request):
 
     context = {
         "item_obj": qs,
-        "item_obj": items,
-        # "item_obj": qs,
         'form': form,
-        }
-        
+    }
+
     return render(request, 'search_results.html', context)
 
 
@@ -126,7 +130,8 @@ def signup(request):
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get('username')
-            messages.success(request, f"Your account has been created! {username} your now able to login")
+            messages.success(
+                request, f"Your account has been created! {username} your now able to login")
             return redirect('login')
     else:
         form = SignUpForm()
@@ -137,7 +142,8 @@ def signup(request):
 def profile(request):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
-        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        p_form = ProfileUpdateForm(
+            request.POST, request.FILES, instance=request.user.profile)
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
@@ -152,6 +158,7 @@ def profile(request):
         "p_form": p_form
     }
     return render(request, 'my_account.html', context)
+
 
 @login_required(login_url='/login/')
 def meals(request):

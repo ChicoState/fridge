@@ -243,12 +243,6 @@ body {
     color: black;
 }
 
-
-/* .topnav a.active {
-    background-color: #04AA6D;
-    color: white;
-} */
-
 .btn-group {
     height: 70px;
 }
@@ -274,4 +268,15 @@ body {
 
 .button_update {
     margin-left: 120px;
+}
+
+#mic-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: 890px;
+    margin-top: 40px;
+    padding-left: 580px;
+    color: red;
+    font-size: 20px;
 }

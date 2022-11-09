@@ -22,19 +22,21 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="preconnect" href="https://fonts.gstatic.com"> 
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+    <script src="{% static 'js/fridge.js' %}"></script>
     <div class="container mt-5">
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid">
-
-
                 <form action="/search/" method="GET" class="inline">
                     <div class="input-icons">
                     <i class="fa fa-search icon"></i>
-                    <input style="width:400px; border-radius:20px;margin-top: 20px;" class="input-field" type="search" name="q" value="{{ request.GET.q }}"
+                    <i id="mic-icon" class="fa fa-microphone"  onclick = "startDictation()" name="q" value="{{ request.GET.q }}"></i>
+                    <input style="width:400px; border-radius:20px;margin-top: 20px;" id = "transcript" class="input-field" type="search" name="q" value="{{ request.GET.q }}"
                            placeholder="Search what's in your fridge" aria-label="Search">
-                    {% comment %} <button style="height:50px; margin-top: 15px; "class="button3" value="Search" type="submit">Search</button> {% endcomment %}
+
                     </div>
+
                 </form>
+                
                 <form action="/search/" method="GET">
                 <button style="height:50px; margin-right: 600px;" class="button3" value="Search" type="submit">Search</button>
                 </form>
@@ -43,6 +45,13 @@
                         data-bs-whatever="@mdo"><i class="fa-solid fa-plus" style="font-size:35px"><h6>Add</h6></i>
                     
                 </button>
+                {% comment %} <div id="myBtnContainer">
+                    <button class="btn active" onclick="filterSelection('all')"> Show all</button>
+                    <button class="btn" onclick="filterSelection('cars')"> Cars</button>
+                    <button class="btn" onclick="filterSelection('animals')"> Animals</button>
+                    <button class="btn" onclick="filterSelection('fruits')"> Fruits</button>
+                    <button class="btn" onclick="filterSelection('colors')"> Colors</button>
+                  </div> {% endcomment %}
             </div>
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -74,25 +83,27 @@
         </nav>
     </div>
 
-    <div class="container mt-2">
+    <div class="container">
         {#for more items#}
-
         <table class="table table-hover border table-responsive">
-
             <thead>
-            <tr>
-                <th scope="col">Photo</th>
-                <th scope="col">Item Type</th>
-                <th scope="col">Item Name</th>
-                <th scope="col">Price</th>
-                <th scope="col">Quantity</th>
+            {% comment %} <table id="table"> {% endcomment %}
+                <table id="table">
+                    <tr>
+                <th onclick = "sortTable(0)" scope="col">Photo</th>
+                <th onclick = "sortTable(1)" scope="col">Item Type</th>
+                <th onclick = "sortTable(2)" scope="col">Item Name</th>
+                <th onclick = "sortTable(3)" scope="col">Price</th>
+                <th onclick = "sortTable(4)" scope="col">Quantity</th>
                 <th scope="col">Date Stored</th>
                 <th scope="col">Expiry</th>
                 <th scope="col">Status</th>
                 <th scope="col">Option</th>
             </tr>
             </thead>
+            {% comment %} <table id="table"> {% endcomment %}
             <tbody class="res">
+            {% comment %} <table id="table"> {% endcomment %}
             {% for item in items %}
                 <tr>
                     <td style="width:90px"><img src="{{ item.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;"></td>
@@ -104,10 +115,10 @@
                     <td>{{ item.valid_from }}</td>
                     <td>{{ item.valid_to }}</td>
 
-                    {% if item.status == 'Warning' %}
-                    <td class="text-warning">Warning</td>
-                    {% elif item.status == 'Good' %}
+                    {% if item.status == 'Good' %}
                     <td class="text-success">Good</td>
+                    {% elif item.status == 'Warning' %}
+                    <td class="text-warning">Warning</td>
                     {% else %}
                     <td class="text-danger">Expired</td>
                     {% endif %}
@@ -125,17 +136,31 @@
                 </tr>
             {% endfor %}
             </tr>
-
-
+            <script>
+                function startDictation() {
+                  if (window.hasOwnProperty('webkitSpeechRecognition')) {
+                    var recognition = new webkitSpeechRecognition();
+              
+                    recognition.continuous = false;
+                    recognition.interimResults = false;
+              
+                    recognition.lang = 'en-US';
+                    recognition.start();
+              
+                    recognition.onresult = function (e) {
+                      document.getElementById('transcript').value = e.results[0][0].transcript;
+                      recognition.stop();
+                      document.getElementById('labnol').submit();
+                    };
+              
+                    recognition.onerror = function (e) {
+                      recognition.stop();
+                    };
+                  }
+                }
+              </script>
+              
             </tbody>
         </table>
     </div>
-
-{#    <script>#}
-{#    var name = "{{ user.username }}";#}
-{#    document.getElementById("me").value#}
-{#        = name;#}
-{#    </script>#}
-
-
 {% endblock %}
