@@ -22,10 +22,10 @@
       {% if user.is_authenticated %}
       <div class="topnav">
         <a class="active" href="{% url 'item_list' %}"><i class="fa-solid fa-house"></i> Home</a>
-        <a href="/meals/">Meals</a>
-        <a href="/recipes">Recipes</a>
-        <a href="#about"><i class="fa-solid fa-users"></i> About</a>
-        <a href="#about"><i class="fa-solid fa-phone"></i> Contact-us</a>
+        {% comment %} <a href="/meals/">Meals</a>
+        <a href="/recipes">Recipes</a> {% endcomment %}
+        {% comment %} <a href="#about"><i class="fa-solid fa-users"></i> About</a>
+        <a href="#about"><i class="fa-solid fa-phone"></i> Contact-us</a> {% endcomment %}
       </div>
       <div class="btn-group">
         <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown"

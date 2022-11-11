@@ -36,7 +36,6 @@
                     </div>
 
                 </form>
-                
                 <form action="/search/" method="GET">
                 <button style="height:50px; margin-right: 600px;" class="button3" value="Search" type="submit">Search</button>
                 </form>
@@ -89,7 +88,7 @@
             <thead>
             {% comment %} <table id="table"> {% endcomment %}
                 <table id="table">
-                    <tr>
+        <tr>
                 <th onclick = "sortTable(0)" scope="col">Photo</th>
                 <th onclick = "sortTable(1)" scope="col">Item Type</th>
                 <th onclick = "sortTable(2)" scope="col">Item Name</th>
@@ -99,21 +98,34 @@
                 <th scope="col">Expiry</th>
                 <th scope="col">Status</th>
                 <th scope="col">Option</th>
-            </tr>
+        </tr>
             </thead>
             {% comment %} <table id="table"> {% endcomment %}
-            <tbody class="res">
+                <tbody class="res">
             {% comment %} <table id="table"> {% endcomment %}
-            {% for item in items %}
-                <tr>
+                {% for item in items %}
+                    <div class="row container">
+                    <tr>
                     <td style="width:90px"><img src="{{ item.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;"></td>
                     {% comment %} <td>{{ user.username }}</td> {% endcomment %}
                     <td>{{ item.food_type }}</td>
                     <td>{{ item.food_title }} </td>
                     <td>${{ item.price }}</td>
-                    <td>{{ item.quantity }}</td>
+                    <td>
+                <div class="row container">
+                    <div class="col-md-4 ">
+                        <div class = "input-group text-center mb-2" style="width:130px;">
+                            <button class="input-group-text changeQuantity decrement-btn" style="height: 40px;">-</button>
+                            <input type = "text" name="quantity" class="form-control qty-input text-center" value="{{ item.quantity }}"></input>
+                            <button class="input-group-text changeQuantity increment-btn" style="height: 40px;">+</button>
+                        </div>
+                    </div>
+                </div>
+                    </td>
+                    {% comment %} <td>{{ item.quantity }}</td> {% endcomment %}
                     <td>{{ item.valid_from }}</td>
                     <td>{{ item.valid_to }}</td>
+                    
 
                     {% if item.status == 'Good' %}
                     <td class="text-success">Good</td>
@@ -129,11 +141,14 @@
                         {% comment %} <a class="btn btn" href="#" onclick="confirmDeleteModal({{ row.id }})"><i class="fa fa-trash-o" style="font-size:25px;color:red"></i></a> {% endcomment %}
 
                     </td>
-
+                
+                </div>
                     {% empty %}
                 <tr>
                     <td colspan="12" class="text-center bg-warning">No data...!!!</td>
                 </tr>
+                
+            
             {% endfor %}
             </tr>
             <script>
@@ -156,7 +171,7 @@
                     recognition.onerror = function (e) {
                       recognition.stop();
                     };
-                  }
+                  } 
                 }
               </script>
               

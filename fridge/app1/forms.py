@@ -10,14 +10,14 @@ class ItemForm(forms.ModelForm):
             attrs={
                 'type': 'date',
                 'class': 'form-control'},
-            format='%m/%d/%Y')
+            )
     )
     valid_from = forms.DateField(
         widget = forms.DateInput(
             attrs={
                 'type': 'date',
                 'class': 'form-control'},
-            format='%m/%d/%Y')
+            )
     )
     class Meta:
         model = Item

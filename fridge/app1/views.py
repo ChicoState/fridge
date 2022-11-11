@@ -23,9 +23,10 @@ def list_item(request):
             obj.author = Profile.objects.get(
                 id=request.user.id)  # Add an author field which will contain current user's id
             obj.save()  #
+    
+        messages.success(request, "Successfully Item added...!!!")
+        return redirect('item_list')
 
-            messages.success(request, "Successfully Item added...!!!")
-            return redirect('item_list')
     else:
         form = ItemForm()
 
@@ -33,6 +34,8 @@ def list_item(request):
         three_days_from_today = date.today()+timedelta(days=3)
         today = date.today()
         valid_to = item.valid_to
+        days_left = (item.valid_to - item.valid_from).days
+        print("Days left: ",days_left)
 
         if valid_to < today:
             item.status = 'Expired'
@@ -46,7 +49,6 @@ def list_item(request):
         'form': form,
     }
     return render(request, 'index.html', context)
-
 
 @login_required
 def item_update(request, pk):
@@ -122,7 +124,6 @@ def search(request):
     }
 
     return render(request, 'search_results.html', context)
-
 
 def signup(request):
     if request.method == 'POST':
