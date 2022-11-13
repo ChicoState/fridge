@@ -40,12 +40,6 @@ def list_item(request):
         for p in prices:
             totalcost += p['price']
 
-        st = Item.objects.filter(author=request.user.id).values('status')
-        for x in items:
-            if x.status == 'Good':
-                count =+ 1
-                print((count))
-
         if valid_to < today:
             item.status = 'Expired'
 
