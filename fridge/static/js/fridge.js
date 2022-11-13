@@ -57,3 +57,12 @@ function sortTable(n) {
         }
     }
 }
+$(document).ready(function() {
+    $(".btn").click(function() {
+        if (confirm("Are you sure you want to delete")) {
+
+        } else {
+            return false
+        }
+    })
+})

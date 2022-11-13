@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm
 from datetime import timedelta, date
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -23,22 +24,31 @@ def list_item(request):
             obj.author = Profile.objects.get(
                 id=request.user.id)  # Add an author field which will contain current user's id
             obj.save()  #
-    
+
         messages.success(request, "Successfully Item added...!!!")
         return redirect('item_list')
 
     else:
         form = ItemForm()
-
     for item in items:
         three_days_from_today = date.today()+timedelta(days=3)
         today = date.today()
         valid_to = item.valid_to
-        days_left = (item.valid_to - item.valid_from).days
-        print("Days left: ",days_left)
+        count_rows = (len(items))
+        prices = Item.objects.filter(author=request.user.id).values('price')
+        totalcost = 0
+        for p in prices:
+            totalcost += p['price']
+
+        st = Item.objects.filter(author=request.user.id).values('status')
+        for x in items:
+            if x.status == 'Good':
+                count =+ 1
+                print((count))
 
         if valid_to < today:
             item.status = 'Expired'
+
         elif valid_to <= three_days_from_today:
             item.status = 'Warning'
         else:
@@ -46,6 +56,8 @@ def list_item(request):
 
     context = {
         'items': items,
+        'totalcost': totalcost,
+        'count_rows' : count_rows,
         'form': form,
     }
     return render(request, 'index.html', context)
@@ -105,7 +117,7 @@ def search(request):
             messages.warning(request, "Search Item Not found '%s' ...!!!" % (query),
                              "search another Item...???")
 
-        
+
     for item in qs:
         three_days_from_today = date.today()+timedelta(days=3)
         today = date.today()
@@ -175,3 +187,25 @@ def recipes(request):
         'title': "Reccomended Recipes",
     }
     return render(request, 'recipes.html', context=context)
+
+
+@login_required
+def item_update_quantity(request, pk):
+    """Update item quantity view.
+
+    method: POST
+    """
+    if request.method == "POST":
+        # Here we will get value of quantity, that is given with the request
+        # the data that is passed through form-data can be accessed as below.
+        quantity = request.POST.get("quantity", None)
+        if quantity:
+            obj = get_object_or_404(Item, pk=pk)
+            obj.quantity = quantity  # this will just update the value in object
+            obj.save()  # This call the db operation, and update the quantity
+            return JsonResponse(status=200, data={"id": pk, "quantity": quantity})
+            # The below two responses can be ignored if you don't want.
+            # but it is a good practice to have them, these errors can be handled from
+            # client. Anyway these will not occur in this current situation.
+        return JsonResponse(status=400, data={"message": "quantity is required!"})
+    return JsonResponse(status=405, data={"message": "only post requests are allowed"})

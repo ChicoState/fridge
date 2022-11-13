@@ -18,39 +18,42 @@
 
     </style>
 
-    <script src="https://kit.fontawesome.com/be7f532f58.js" crossorigin="anonymous"></script>    
+    <script src="https://kit.fontawesome.com/be7f532f58.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="preconnect" href="https://fonts.gstatic.com"> 
+    <link rel="stylesheet" href="{% static 'css/new.css' %}">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <script src="{% static 'js/fridge.js' %}"></script>
     <div class="container mt-5">
         <nav class="navbar navbar-light bg-light">
             <div class="container-fluid">
+                <button type="button" class="addbutton" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                        data-bs-whatever="@mdo"><i class="fa-solid fa-plus" style="font-size:35px"><h6>Add</h6></i>
+
+                </button>
+                <a href="" class="button4" style="background-color:black">All ({{ count_rows }})</a>
+                <a href="" class="button4" style="background-color:#f14e4e">Expired</a>
+                <a href="" class="button4" style="background-color:#f1bb4e">Warning</a>
+                <a href="" class="button4" style="background-color:#84f14e">Good</a>
+                {% comment %} <button type="button" class="addbutton" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                data-bs-whatever="@mdo"><i class="fa-solid fa-plus" style="font-size:35px"><h6>Add</h6></i>
+
+        </button> {% endcomment %}
                 <form action="/search/" method="GET" class="inline">
                     <div class="input-icons">
                     <i class="fa fa-search icon"></i>
                     <i id="mic-icon" class="fa fa-microphone"  onclick = "startDictation()" name="q" value="{{ request.GET.q }}"></i>
-                    <input style="width:400px; border-radius:20px;margin-top: 20px;" id = "transcript" class="input-field" type="search" name="q" value="{{ request.GET.q }}"
+                    <input style="width:400px; border-radius:20px;margin-top: 20px;margin-left: -1px;" id = "transcript" class="input-field" type="search" name="q" value="{{ request.GET.q }}"
                            placeholder="Search what's in your fridge" aria-label="Search">
 
                     </div>
 
                 </form>
                 <form action="/search/" method="GET">
-                <button style="height:50px; margin-right: 600px;" class="button3" value="Search" type="submit">Search</button>
+                <button style="height:50px; margin-right: 20px; margin-left: -140px" class="button3" value="Search" type="submit">Search</button>
                 </form>
-
-                <button type="button" class="addbutton" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                        data-bs-whatever="@mdo"><i class="fa-solid fa-plus" style="font-size:35px"><h6>Add</h6></i>
-                    
-                </button>
-                {% comment %} <div id="myBtnContainer">
-                    <button class="btn active" onclick="filterSelection('all')"> Show all</button>
-                    <button class="btn" onclick="filterSelection('cars')"> Cars</button>
-                    <button class="btn" onclick="filterSelection('animals')"> Animals</button>
-                    <button class="btn" onclick="filterSelection('fruits')"> Fruits</button>
-                    <button class="btn" onclick="filterSelection('colors')"> Colors</button>
-                  </div> {% endcomment %}
+               
+        
             </div>
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
@@ -93,7 +96,7 @@
                 <th onclick = "sortTable(1)" scope="col">Item Type</th>
                 <th onclick = "sortTable(2)" scope="col">Item Name</th>
                 <th onclick = "sortTable(3)" scope="col">Price</th>
-                <th onclick = "sortTable(4)" scope="col">Quantity</th>
+                <th onclick = "sortTable(4)" scope="col" style="padding-left: 55px;">Quantity</th>
                 <th scope="col">Date Stored</th>
                 <th scope="col">Expiry</th>
                 <th scope="col">Status</th>
@@ -114,9 +117,9 @@
                     <td>
                 <div class="row container">
                     <div class="col-md-4 ">
-                        <div class = "input-group text-center mb-2" style="width:130px;">
+                        <div class = "input-group text-center mb-2" style="width:130px;" data-id="{{ item.pk }}">
                             <button class="input-group-text changeQuantity decrement-btn" style="height: 40px;">-</button>
-                            <input type = "text" name="quantity" class="form-control qty-input text-center" value="{{ item.quantity }}"></input>
+                            <input type = "text" name="quantity" class="form-control qty-input text-center itemQuantity" value="{{ item.quantity }}"></input>
                             <button class="input-group-text changeQuantity increment-btn" style="height: 40px;">+</button>
                         </div>
                     </div>
@@ -125,7 +128,7 @@
                     {% comment %} <td>{{ item.quantity }}</td> {% endcomment %}
                     <td>{{ item.valid_from }}</td>
                     <td>{{ item.valid_to }}</td>
-                    
+
 
                     {% if item.status == 'Good' %}
                     <td class="text-success">Good</td>
@@ -141,41 +144,43 @@
                         {% comment %} <a class="btn btn" href="#" onclick="confirmDeleteModal({{ row.id }})"><i class="fa fa-trash-o" style="font-size:25px;color:red"></i></a> {% endcomment %}
 
                     </td>
-                
+
                 </div>
                     {% empty %}
                 <tr>
                     <td colspan="12" class="text-center bg-warning">No data...!!!</td>
                 </tr>
-                
-            
+
+
             {% endfor %}
             </tr>
             <script>
                 function startDictation() {
                   if (window.hasOwnProperty('webkitSpeechRecognition')) {
                     var recognition = new webkitSpeechRecognition();
-              
+
                     recognition.continuous = false;
                     recognition.interimResults = false;
-              
+
                     recognition.lang = 'en-US';
                     recognition.start();
-              
+
                     recognition.onresult = function (e) {
                       document.getElementById('transcript').value = e.results[0][0].transcript;
                       recognition.stop();
                       document.getElementById('labnol').submit();
                     };
-              
+
                     recognition.onerror = function (e) {
                       recognition.stop();
                     };
-                  } 
+                  }
                 }
               </script>
-              
+
             </tbody>
         </table>
+        <p><b>Total rows are {{ count_rows }}</b></p>
+        <p><b>Total cost is ${{ totalcost }}</b></p>
     </div>
 {% endblock %}
