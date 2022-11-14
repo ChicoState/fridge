@@ -32,9 +32,10 @@
 
                 </button>
                 <a href="" class="button4" style="background-color:black">All ({{ count_rows }})</a>
-                <a href="" class="button4" style="background-color:#f14e4e">Expired</a>
-                <a href="" class="button4" style="background-color:#f1bb4e">Warning</a>
-                <a href="" class="button4" style="background-color:#84f14e">Good</a>
+                <a href="" class="button4" style="background-color:red" ;>Expired ({{ expired.count }})</a>
+            
+                <a href="" class="button4" style="background-color:#FFBF00;">Warning ({{ warning.count }})</a>
+                <a href="" class="button4" style="background-color:green">Good ({{ good.count }})</a>
                 {% comment %} <button type="button" class="addbutton" data-bs-toggle="modal" data-bs-target="#exampleModal"
                 data-bs-whatever="@mdo"><i class="fa-solid fa-plus" style="font-size:35px"><h6>Add</h6></i>
 
@@ -144,13 +145,46 @@
                         {% comment %} <a class="btn btn" href="#" onclick="confirmDeleteModal({{ row.id }})"><i class="fa fa-trash-o" style="font-size:25px;color:red"></i></a> {% endcomment %}
 
                     </td>
-
                 </div>
+                
                     {% empty %}
+                    <!-- Modal -->
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">Item Name</th>
+                                    <th scope="col">Price</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    {% for data in expired %}
+                                    <tr>
+                                        {% if data.status == 'Good' %}
+                                        <td>{{ data.food_title}}</td>
+                                        <td>{{ data.price}}</td>
+                                        {% endif %}
+                                    </tr>
+                                    {% endfor %}
+                                  
+                                </tbody>
+                              </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
                 <tr>
                     <td colspan="12" class="text-center bg-warning">No data...!!!</td>
                 </tr>
-
 
             {% endfor %}
             </tr>
@@ -180,7 +214,6 @@
 
             </tbody>
         </table>
-        <p><b>Total rows are {{ count_rows }}</b></p>
         <p><b>Total cost is ${{ totalcost }}</b></p>
     </div>
 {% endblock %}

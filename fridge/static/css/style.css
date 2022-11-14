@@ -315,3 +315,7 @@ a.button4:hover {
 .container-fluid {
     background-color: #CD5C5C;
 }
+
+.button4 {
+    margin-left: 44px;
+}

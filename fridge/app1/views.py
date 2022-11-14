@@ -30,11 +30,30 @@ def list_item(request):
 
     else:
         form = ItemForm()
+
     for item in items:
         three_days_from_today = date.today()+timedelta(days=3)
         today = date.today()
         valid_to = item.valid_to
-        count_rows = (len(items))
+        count_rows = (len(items)) 
+        total = Item.objects.all().count
+
+        #<-------Status-only------->
+        # meat = Item.objects.filter(food_type = 'meat')
+        # fruits = Item.objects.filters(food_type = 'fruits')
+        expired = Item.objects.filter(status = 'Expired')
+        warning = Item.objects.filter(status = 'Warning')
+        good = Item.objects.filter(status = 'Good')
+
+
+
+        # check_status_count = Item.objects.filter(author=request.user.id).values('status')
+        # countstatus = 0
+        # for s in check_status_count:
+        #     if(s.status == 'Expired'):
+        #         countstatus += s['status']
+        #     print(countstatus)
+
         prices = Item.objects.filter(author=request.user.id).values('price')
         totalcost = 0
         for p in prices:
@@ -51,6 +70,9 @@ def list_item(request):
     context = {
         'items': items,
         'totalcost': totalcost,
+        'warning': warning,
+        'good': good,
+        'expired':expired,
         'count_rows' : count_rows,
         'form': form,
     }
@@ -94,7 +116,6 @@ def search(request):
 
     # search items by title(name), type(dairy,meat etc...)
     qs = Item.objects.filter(author=request.user.id).order_by('valid_to')
-    print(qs)
     query = request.GET.get('q')
 
     if query:
