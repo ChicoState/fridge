@@ -136,6 +136,12 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media_root')
 
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'Refrigerare@gmail.com'
+EMAIL_HOST_PASSWORD = 'yohhzaqdsxwqjzzd'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
@@ -146,7 +152,7 @@ LOGIN_REDIRECT_URL = 'item_list'
 LOGOUT_REDIRECT_URL = 'item_list'
 
 # for password rest console based preview reset password link
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'

@@ -9,6 +9,8 @@ from django.shortcuts import render, redirect
 from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm
 from datetime import timedelta, date
 from django.http import JsonResponse
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 # Create your views here.
@@ -30,50 +32,57 @@ def list_item(request):
 
     else:
         form = ItemForm()
-
+    counterexpired = 0
+    counterwarning = 0
+    countergood = 0
     for item in items:
         three_days_from_today = date.today()+timedelta(days=3)
         today = date.today()
         valid_to = item.valid_to
-        count_rows = (len(items)) 
+
+        #<-------Filter-Data-only------->
+        exp = Item.objects.filter(status = 'Expired')
+
+        #<-------Filter-Data-only------->
         total = Item.objects.all().count
-
-        #<-------Status-only------->
-        # meat = Item.objects.filter(food_type = 'meat')
-        # fruits = Item.objects.filters(food_type = 'fruits')
-        expired = Item.objects.filter(status = 'Expired')
-        warning = Item.objects.filter(status = 'Warning')
-        good = Item.objects.filter(status = 'Good')
-
-
-
-        # check_status_count = Item.objects.filter(author=request.user.id).values('status')
-        # countstatus = 0
-        # for s in check_status_count:
-        #     if(s.status == 'Expired'):
-        #         countstatus += s['status']
-        #     print(countstatus)
-
+        countermeat = Item.objects.filter(food_type = 'meat')
+        counterdairy = Item.objects.filter(food_type = 'dairy')
+        counterbeverages = Item.objects.filter(food_type = 'beverages')
+        counterfrozveg = Item.objects.filter(food_type = 'frozen vegetables')
+        counterfruits = Item.objects.filter(food_type = 'fruits')
         prices = Item.objects.filter(author=request.user.id).values('price')
         totalcost = 0
         for p in prices:
             totalcost += p['price']
+            
 
         if valid_to < today:
             item.status = 'Expired'
+            counterexpired += 1
 
         elif valid_to <= three_days_from_today:
+            
             item.status = 'Warning'
+            counterwarning += 1
+
         else:
+            
             item.status = 'Good'
+            countergood  += 1
 
     context = {
         'items': items,
         'totalcost': totalcost,
-        'warning': warning,
-        'good': good,
-        'expired':expired,
-        'count_rows' : count_rows,
+        'counterwarning': counterwarning,
+        'countergood': countergood,
+        'countermeat': countermeat,
+        'counterdairy': counterdairy,
+        'counterbeverages': counterbeverages,
+        'counterfrozveg': counterfrozveg,
+        'counterfruits': counterfruits,
+        'exp':exp,
+        'total' : total,
+        'counterexpired':counterexpired,
         'form': form,
     }
     return render(request, 'index.html', context)
@@ -132,7 +141,6 @@ def search(request):
             messages.warning(request, "Search Item Not found '%s' ...!!!" % (query),
                              "search another Item...???")
 
-
     for item in qs:
         three_days_from_today = date.today()+timedelta(days=3)
         today = date.today()
@@ -156,10 +164,17 @@ def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
+            username = request.POST['username']
+            email = request.POST['email']
+            subject = 'Welcome to Fridge'
+            message = f'Hi, {username} we will help you to setup your Fridge'
+            from_email = settings.EMAIL_HOST_USER
+            recipient_list = [email] 
+            send_mail(subject, message, from_email, recipient_list, fail_silently=False)
             form.save()
             username = form.cleaned_data.get('username')
             messages.success(
-                request, f"Your account has been created! {username} your now able to login")
+                request, f"Your account has been created! {username} you are now able to login")
             return redirect('login')
     else:
         form = SignUpForm()

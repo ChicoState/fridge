@@ -1,52 +1,176 @@
 {% load static %}
 <script src="https://kit.fontawesome.com/be7f532f58.js" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-<nav class="navbar navbar-dark" style="background-color: #34495E;">
-    <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-        <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-            <use xlink:href="#bootstrap"></use>
-        </svg>
-    </a>
-    <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-        <a href="/" class="nav-link px-2 text-white">
-            <h5><img src="{% static 'images/Fridge_logo.png' %}" alt="Fridge Logo" width="50" height="60">FRIDGE</h5>
-        </a>
-    </ul>
-    {% comment %} <div class="topnav">
-        <a class="active" href="#home">Home</a>
-        <a href="#news">News</a>
-        <a href="#contact">Contact</a>
-        <a href="#about">About</a>
-      </div> {% endcomment %}
+<link rel="stylesheet" href="{% static '/css/nav.css' %}">
+<script src="{% static '/js/nav.js' %}"></script>
 
-      {% if user.is_authenticated %}
-      <div class="topnav">
-        <a class="active" href="{% url 'item_list' %}"><i class="fa-solid fa-house"></i> Home</a>
-        {% comment %} <a href="/meals/">Meals</a>
-        <a href="/recipes">Recipes</a> {% endcomment %}
-        {% comment %} <a href="#about"><i class="fa-solid fa-users"></i> About</a>
-        <a href="#about"><i class="fa-solid fa-phone"></i> Contact-us</a> {% endcomment %}
+
+    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+<body>
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalToggleLabel">Expired</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Photo</th>
+                        <th scope="col">Item Type</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for check in countermeat %}
+                        <tr>
+                            {% if check.food_type == 'meat' %}
+                            <td><img src="{{ check.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;"></td>
+                            <td>{{ check.food_type}}</td>
+                            <td>{{ check.food_title}}</td>
+                            <td>{{ check.price}}</td>
+                            <td>{{ check.quantity}}</td>                            
+                            {% endif %}
+                        </tr>
+                        {% empty %}
+                                <tr>
+                                  <td colspan="12" class="text-center bg-danger">No item found...!!!</td>
+                                 </tr>
+                        {% endfor %}
+                      
+                    </tbody>
+                  </table>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">Open second modal</button>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="btn-group">
-        <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown"
-                aria-expanded="false">
-            Welcome back, {{ user.username|capfirst }}
-        </button>
-        <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="{% url 'item_list' %}"><i class="fa-solid fa-house"></i> Home</a></li>
-            <li><a class="dropdown-item" href="{% url 'profile_update' %}"><i class="fa-solid fa-user"></i> My Profile</a></li>
-            <li><a class="dropdown-item" href="{% url 'password_change' %}"><i class="fa-sharp fa-solid fa-key"></i> Change password</a></li>
-            <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Log out</a></li>
+      <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalToggleLabel2">Modal 2</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              Hide this modal and show the first with the button below.
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">Back to first</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Open first modal</a>
+    <nav>
+        <div class="nav-bar">
+            <i class='bx bx-menu sidebarOpen' ></i>
+            <span class="logo navLogo"><img src="{% static 'images/Fridge_logo.png' %}" alt="Fridge Logo" width="50" height="60"><a href="/">Fridge</a></span>
 
-        </ul>
-    </div>
-    {% else %}
-    <a href="{% url 'login' %}" class="btn btn-outline-secondary me-2">Login</a>
+            <div class="menu">
+                <div class="logo-toggle">
+                    <span class="logo"><a href="#">Fridge</a></span>
+                    <i class='bx bx-x siderbarClose'></i>
+                </div>
+                {% if user.is_authenticated %}
+                <ul class="nav-links">
+                    <li><a href="{% url 'item_list' %}">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Services</a></li>
+                    <div class="btn-group">
+                        <button type="button" class="btn-btn navbtn dropdown-toggle" style="color: gold; font-weight: bold;" data-bs-toggle="dropdown"
+                                aria-expanded="false">Welcome back, {{ user.username|capfirst }}
+                        </button>
+                        <ul class="dropdown-menu" style="background-color: orange;">
+                            <li><a class="dropdown-item" href="{% url 'item_list' %}"><i class="fa-solid fa-house"></i> Home</a></li>
+                            <li><a class="dropdown-item" href="{% url 'profile_update' %}"><i class="fa-solid fa-user"></i> My Profile</a></li>
+                            <li><a class="dropdown-item" href="{% url 'password_change' %}"><i class="fa-sharp fa-solid fa-key"></i> Change password</a></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fa-solid fa-right-from-bracket"></i> Log out</a></li>
+                
+                        </ul>
+                    </div>
+                </ul>
+                <div class="darkLight-searchBox">
+                    <div class="dark-light">
+                        <i class='bx bx-moon moon'></i>
+                        <i class='bx bx-sun sun'></i>
+                    </div>
+                
+                
+            </div>
+            
+            
+            
+            <button class="center notification icon btn btn-default" data-bs-toggle="modal" data-bs-target="#exampleModalToggle"> Expired
+                <span class="notification-number">{{counterexpired}}</span>
+            </button>
+            <button class="center notification1 icon1 btn btn-default"> Warning
+                <span class="notification1-number1">{{counterwarning}}</span>
+            </button>
+            <button class="center notification2 icon2 btn btn-default"> Good
+                <span class="notification2-number2">{{countergood}}</span>
+            </button>
+                    
+                </div>
+            </div>
+        </div>
+
+       
+        {% else %}
+    <a href="{% url 'login' %}" class="btn btn-success" style="margin-right: 12px;">Login</a>
     <a href="{% url 'signup' %}" class="btn btn-warning ">Sign-up</a>
     {% endif %}
+    </nav>
+<script>
 
+const body = document.querySelector("body"),
+      nav = document.querySelector("nav"),
+      modeToggle = document.querySelector(".dark-light"),
+      searchToggle = document.querySelector(".searchToggle"),
+      sidebarOpen = document.querySelector(".sidebarOpen"),
+      siderbarClose = document.querySelector(".siderbarClose");
 
+      let getMode = localStorage.getItem("mode");
+          if(getMode && getMode === "dark-mode"){
+            body.classList.add("dark");
+          }
 
-    </ul>
-  </div>
-</nav>
+// js code to toggle dark and light mode
+      modeToggle.addEventListener("click" , () =>{
+        modeToggle.classList.toggle("active");
+        body.classList.toggle("dark");
+
+        // js code to keep user selected mode even page refresh or file reopen
+        if(!body.classList.contains("dark")){
+            localStorage.setItem("mode" , "light-mode");
+        }else{
+            localStorage.setItem("mode" , "dark-mode");
+        }
+      });
+
+// js code to toggle search box
+        searchToggle.addEventListener("click" , () =>{
+        searchToggle.classList.toggle("active");
+      });
+ 
+      
+//   js code to toggle sidebar
+sidebarOpen.addEventListener("click" , () =>{
+    nav.classList.add("active");
+});
+
+body.addEventListener("click" , e =>{
+    let clickedElm = e.target;
+
+    if(!clickedElm.classList.contains("sidebarOpen") && !clickedElm.classList.contains("menu")){
+        nav.classList.remove("active");
+    }
+});
+</script>
+
+</body>

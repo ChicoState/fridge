@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
+{% load static %}
 
     <style>
         .img {
@@ -12,17 +13,8 @@
     </style>
 
 
-    <div class="container mt-5">
-        <nav class="navbar navbar-light bg-light">
-            <h5 class="page-header"><a href="{% url 'item_list' %}">Home</a> >> Search </h5>
-
-            <div class="container-fluid">
-                <form action="" method="GET" class="d-flex">
-                    <input class="form-control me-2" type="search" name="q" value="{{ request.GET.q }}"
-                           placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" value="Search" type="submit">Search</button>
-                </form>
-            </div>
+    <div class="topcontainer1">
+        
 
             <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
@@ -53,60 +45,60 @@
         </nav>
     </div>
 
-    <div class="container mt-1 res">
-        {#for more items#}
-
-        <table class="table table-hover border table-responsive ">
-
+    <div class="container">
+        
             <thead>
-            <tr>
-                <th scope="col">Photos</th>
-                <th scope="col">Item Type</th>
-                <th scope="col">Item Name</th>
-                <th scope="col">Price</th>
-                <th scope="col">Quantity</th>
+                <nav class="navbar navbar-light navsearch">
+                    <h5 style="color:white; font-weight:bold; font-size:20px; padding-left:30px; padding-bottom: 30px;" class="page-header"><a href="{% url 'item_list' %}"><img src="{% static 'images/left-arrow.png' %}" alt="left arrow" height="50" width="50"></a> Home</h5><h1 style="color: #037d50;
+                    font-size: 20px;
+                    font-weight: bolder;
+                    padding-right: 580px;
+                    padding-bottom: 30px;">Search Items</h1>
+                    
+            {% comment %} <table id="table"> {% endcomment %}
+                <table id="table">
+        <tr>
+                <th onclick = "sortTable(0)" scope="col">Photo</th>
+                <th onclick = "sortTable(1)" scope="col">Item Type</th>
+                <th onclick = "sortTable(2)" scope="col">Item Name</th>
+                <th onclick = "sortTable(3)" scope="col">Price</th>
+                <th onclick = "sortTable(4)" scope="col">Quantity</th>
                 <th scope="col">Date Stored</th>
                 <th scope="col">Expiry</th>
                 <th scope="col">Status</th>
-                <th scope="col">Option</th>
-            </tr>
+                <th scope="col">Action</th>
+        </tr>
             </thead>
-            <tbody class="res">
-
-
-            {% for item in item_obj %}
-                <tr>
-                    <td><img src="{{ item.photos.url }}" class="img" alt=""></td>
+            {% comment %} <table id="table"> {% endcomment %}
+                <tbody class="res">
+            {% comment %} <table id="table"> {% endcomment %}
+                {% for item in item_obj %}
+                    <div class="row container">
+                    <tr>
+                    <td style="width:90px"><img src="{{ item.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;"></td>
+                    {% comment %} <td>{{ user.username }}</td> {% endcomment %}
                     <td>{{ item.food_type }}</td>
                     <td>{{ item.food_title }} </td>
-                    <td>{{ item.price }}</td>
+                    <td>${{ item.price }}</td>
                     <td>{{ item.quantity }}</td>
                     <td>{{ item.valid_from }}</td>
                     <td>{{ item.valid_to }}</td>
 
-                    {% if item.status == 'Warning' %}
-                    <td class="text-warning">Warning</td>
-                    {% elif item.status == 'Good' %}
+
+                    {% if item.status == 'Good' %}
                     <td class="text-success">Good</td>
+                    {% elif item.status == 'Warning' %}
+                    <td class="text-warning">Warning</td>
                     {% else %}
                     <td class="text-danger">Expired</td>
                     {% endif %}
-
-                    {% comment %} {% if item.valid_from < item.valid_to %}
-                        <td class="text-success">Good</td>
-                    {% elif item.valid_from <= item.valid_to %}
-                        <td class="text-warning">Warning</td>
-                    {% else %}
-                        <td class="text-danger">Expired</td>
-                    {% endif %} {% endcomment %}
-
                     <td>
-                        <a href="{% url 'item_update' item.id %}"><i class="fa-solid fa-pen" style="color:#6BAD12;width: 30px; font-size:25px;"></i></a>
                         <a href="{% url 'item_delete' item.pk %}"><i class="fa-solid fa-trash" style="color:#EC4747;width: 30px; font-size:25px;"></i></a>
-                        {% comment %} <a class="btn btn" href="#" onclick="confirmDeleteModal({{ row.id }})"><i class="fa fa-trash-o" style="font-size:25px;color:red"></i></a> {% endcomment %}
-
                     </td>
-
+                </div>
+            </div>
+        </div>
+                
                     {% empty %}
                 <tr>
                     <td colspan="12" class="text-center bg-warning">No data...!!!</td>
@@ -118,6 +110,7 @@
 
             </tbody>
         </table>
+        
     </div>
 
 {% endblock %}

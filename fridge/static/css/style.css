@@ -1,6 +1,4 @@
-/* element style */
-
-h1 {
+element style h1 {
     color: #006400;
     font-size: 60px;
     text-align: center;
@@ -319,3 +317,15 @@ a.button4:hover {
 .button4 {
     margin-left: 44px;
 }
+
+
+/* <----- New navbar css -----> */
+
+h5 {
+    color: #006400;
+}
+
+
+/* .mt-5 {
+    height: 90px;
+} */

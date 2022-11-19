@@ -18,46 +18,28 @@
 
     </style>
 
-    <script src="https://kit.fontawesome.com/be7f532f58.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" href="{% static 'css/new.css' %}">
+    <script src="https://kit.fontawesome.com/ddf411465e.js" crossorigin="anonymous"></script>    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
     <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
     <script src="{% static 'js/fridge.js' %}"></script>
-    <div class="container mt-5">
-        <nav class="navbar navbar-light bg-light">
-            <div class="container-fluid">
-                <button type="button" class="addbutton" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                        data-bs-whatever="@mdo"><i class="fa-solid fa-plus" style="font-size:35px"><h6>Add</h6></i>
 
+    {% comment %} <----- Code Starts From Here -----> {% endcomment %}
+    <div class="topcontainer">
+        <div class="row1">
+          <div class="col-sm-6" style="background-color:white; height:100px; width:1270px; border-radius:50px;">
+                <button class="buttonindex"data-bs-toggle="modal" data-bs-target="#exampleModal">
+                  Add Item
                 </button>
-                <a href="" class="button4" style="background-color:black">All ({{ count_rows }})</a>
-                <a href="" class="button4" style="background-color:red" ;>Expired ({{ expired.count }})</a>
-            
-                <a href="" class="button4" style="background-color:#FFBF00;">Warning ({{ warning.count }})</a>
-                <a href="" class="button4" style="background-color:green">Good ({{ good.count }})</a>
-                {% comment %} <button type="button" class="addbutton" data-bs-toggle="modal" data-bs-target="#exampleModal"
-                data-bs-whatever="@mdo"><i class="fa-solid fa-plus" style="font-size:35px"><h6>Add</h6></i>
-
-        </button> {% endcomment %}
-                <form action="/search/" method="GET" class="inline">
-                    <div class="input-icons">
-                    <i class="fa fa-search icon"></i>
-                    <i id="mic-icon" class="fa fa-microphone"  onclick = "startDictation()" name="q" value="{{ request.GET.q }}"></i>
-                    <input style="width:400px; border-radius:20px;margin-top: 20px;margin-left: -1px;" id = "transcript" class="input-field" type="search" name="q" value="{{ request.GET.q }}"
-                           placeholder="Search what's in your fridge" aria-label="Search">
-
-                    </div>
-
-                </form>
-                <form action="/search/" method="GET">
-                <button style="height:50px; margin-right: 20px; margin-left: -140px" class="button3" value="Search" type="submit">Search</button>
-                </form>
-               
-        
-            </div>
-
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                <a href="{% url 'item_list' %}"><button class="btn btn-primary"><img src="{% static 'images/grid.png' %}" alt="all" class="categories-img" width="31" height="40">All ({{total}})</button></a>
+                <a><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2"><img src="{% static 'images/dairy-products.png' %}" alt="dairy" class="categories-img" width="35" height="50">Dairy ({{counterdairy.count}})</button></a>
+                <a><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3"><img src="{% static 'images/wine-bottles.png' %}" alt="beverages" class="categories-img" width="35" height="50">Beverages ({{counterbeverages.count}})</button></a>
+                <a><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1"><img src="{% static 'images/beef.png' %}" alt="meat" class="categories-img" width="40" height="50">Meat ({{countermeat.count}})</button></a>
+                <a><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal4"><img src="{% static 'images/vegetable.png' %}" alt="froz veg" class="categories-img" width="35"  height="50">Frozen veg ({{counterfrozveg.count}})</button></a>
+                <a><button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal5"><img src="{% static 'images/fruit.png' %}" alt="fruit" class="categories-img" width="35" height="50">Fruits ({{counterfruits.count}})</button></a>     
+          </div>
+          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -78,16 +60,262 @@
 
                             </form>
                         </div>
-
                     </div>
                 </div>
             </div>
+          
+              <form class="form" action="/search/" method="GET" class="inline">
+                <i class="fa fa-search"></i>
+                <input type="text" class="form-control form-input" id = "transcript" class="input-field" type="search" name="q" value="{{ request.GET.q }}" placeholder=" Search what's in your fridge...">
+                <span class="left-pan"><i class="fa fa-microphone" onclick = "startDictation()" name="q" value="{{ request.GET.q }}"></i></span>
+              </form>
 
-        </nav>
-    </div>
+    {% comment %} <-----Dairy-----> {% endcomment %}
+    <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel" style="padding-left:170px;"><img src="{% static 'images/dairy-products.png' %}" alt="dairy" class="categories-img" width="35" height="50">Dairy ({{counterdairy.count}})</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Photo</th>
+                        <th scope="col">Item Type</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in counterdairy %}
+                        <tr>
+                            {% if data.food_type == 'dairy' %}
+                            <td><img src="{{ data.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;"></td>
+                            <td>{{ data.food_type}}</td>
+                            <td>{{ data.food_title}}</td>
+                            <td>{{ data.price}}</td>
+                            <td>{{ data.quantity}}</td>                            
+                            {% endif %}
+                        </tr>
+                        {% empty %}
+                                <tr>
+                                  <td colspan="12" class="text-center bg-danger">No item found...!!!</td>
+                                 </tr>
+                        {% endfor %}
+                      
+                    </tbody>
+                  </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close
+                </button>
+            </div>
+          </div>
+        </div>
+      </div>
 
+    {% comment %} <-----Baverages-----> {% endcomment %}
+    <div class="modal fade" id="exampleModal3" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel" style="padding-left:170px;"><img src="{% static 'images/wine-bottles.png' %}" alt="beverages" class="categories-img" width="35" height="50">Beverages ({{counterbeverages.count}})</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Photo</th>
+                        <th scope="col">Item Type</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in counterbeverages %}
+                        <tr>
+                            {% if data.food_type == 'beverages' %}
+                            <td><img src="{{ data.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;"></td>
+                            <td>{{ data.food_type}}</td>
+                            <td>{{ data.food_title}}</td>
+                            <td>{{ data.price}}</td>
+                            <td>{{ data.quantity}}</td>                            
+                            {% endif %}
+                        </tr>
+                        {% empty %}
+                                <tr>
+                                  <td colspan="12" class="text-center bg-danger">No item found...!!!</td>
+                                 </tr>
+                        {% endfor %}
+                      
+                    </tbody>
+                  </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close
+                </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    {% comment %} <-----Meat-----> {% endcomment %}
+    <div class="modal fade" id="exampleModal1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel" style="padding-left:170px;"><img src="{% static 'images/beef.png' %}" alt="meat" class="categories-img" width="40" height="50">Meat ({{countermeat.count}})</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Photo</th>
+                        <th scope="col">Item Type</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for data in countermeat %}
+                        <tr>
+                            {% if data.food_type == 'meat' %}
+                            <td><img src="{{ data.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;"></td>
+                            <td>{{ data.food_type}}</td>
+                            <td>{{ data.food_title}}</td>
+                            <td>{{ data.price}}</td>
+                            <td>{{ data.quantity}}</td>                            
+                            {% endif %}
+                        </tr>
+                        {% empty %}
+                                <tr>
+                                  <td colspan="12" class="text-center bg-danger">No item found...!!!</td>
+                                 </tr>
+                        {% endfor %}
+                      
+                    </tbody>
+                  </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close
+                </button>
+            </div>
+          </div>
+        </div>
+      </div>
+        {% comment %} <-----Frozen veg-----> {% endcomment %}
+            <div class="modal fade" id="exampleModal4" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel" style="padding-left:170px;"><img src="{% static 'images/vegetable.png' %}" alt="froz veg" class="categories-img" width="35"  height="50">Frozen veg ({{counterfrozveg.count}})</h5>
+                      <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">Photo</th>
+                                <th scope="col">Item Type</th>
+                                <th scope="col">Item Name</th>
+                                <th scope="col">Price</th>
+                                <th scope="col">Quantity</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                {% for data in counterfrozveg %}
+                                <tr>
+                                    {% if data.food_type == 'frozen vegetables' %}
+                                    <td><img src="{{ data.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;"></td>
+                                    <td>{{ data.food_type}}</td>
+                                    <td>{{ data.food_title}}</td>
+                                    <td>{{ data.price}}</td>
+                                    <td>{{ data.quantity}}</td>                            
+                                    {% endif %}
+                                </tr>
+                                {% empty %}
+                                <tr>
+                                  <td colspan="12" class="text-center bg-danger">No item found...!!!</td>
+                                 </tr>
+                                {% endfor %}
+                            </tbody>
+                          </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close
+                        </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        {% comment %} <-----Fruits-----> {% endcomment %}
+        <div class="modal fade" id="exampleModal5" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel" style="padding-left:170px;"><img src="{% static 'images/fruit.png' %}" alt="fruit" class="categories-img" width="35" height="50">Fruits ({{counterfruits.count}})</h5>
+                  <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table">
+                        <thead>
+                          <tr>
+                            <th scope="col">Photo</th>
+                            <th scope="col">Item Type</th>
+                            <th scope="col">Item Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            {% for data in counterfruits %}
+                            <tr>
+                                {% if data.food_type == 'fruits' %}
+                                <td><img src="{{ data.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;"></td>
+                                <td>{{ data.food_type}}</td>
+                                <td>{{ data.food_title}}</td>
+                                <td>{{ data.price}}</td>
+                                <td>{{ data.quantity}}</td>                            
+                                {% endif %}
+                            </tr>
+                            {% empty %}
+                                <tr>
+                                  <td colspan="12" class="text-center bg-danger">No item found...!!!</td>
+                                 </tr>
+                            {% endfor %}
+                          
+                        </tbody>
+                      </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close
+                    </button>
+                </div>
+              </div>
+            </div>
+          </div>
+         
     <div class="container">
+        
         {#for more items#}
+        
         <table class="table table-hover border table-responsive">
             <thead>
             {% comment %} <table id="table"> {% endcomment %}
@@ -104,19 +332,16 @@
                 <th scope="col">Option</th>
         </tr>
             </thead>
-            {% comment %} <table id="table"> {% endcomment %}
                 <tbody class="res">
-            {% comment %} <table id="table"> {% endcomment %}
                 {% for item in items %}
                     <div class="row container">
                     <tr>
                     <td style="width:90px"><img src="{{ item.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;"></td>
-                    {% comment %} <td>{{ user.username }}</td> {% endcomment %}
                     <td>{{ item.food_type }}</td>
                     <td>{{ item.food_title }} </td>
                     <td>${{ item.price }}</td>
                     <td>
-                <div class="row container">
+                <div class="row container qtycss">
                     <div class="col-md-4 ">
                         <div class = "input-group text-center mb-2" style="width:130px;" data-id="{{ item.pk }}">
                             <button class="input-group-text changeQuantity decrement-btn" style="height: 40px;">-</button>
@@ -126,7 +351,6 @@
                     </div>
                 </div>
                     </td>
-                    {% comment %} <td>{{ item.quantity }}</td> {% endcomment %}
                     <td>{{ item.valid_from }}</td>
                     <td>{{ item.valid_to }}</td>
 
@@ -142,50 +366,17 @@
                     <td>
                         <a href="{% url 'item_update' item.id %}"><i class="fa-solid fa-pen" style="color:#6BAD12;width: 30px; font-size:25px;"></i></a>
                         <a href="{% url 'item_delete' item.pk %}"><i class="fa-solid fa-trash" style="color:#EC4747;width: 30px; font-size:25px;"></i></a>
-                        {% comment %} <a class="btn btn" href="#" onclick="confirmDeleteModal({{ row.id }})"><i class="fa fa-trash-o" style="font-size:25px;color:red"></i></a> {% endcomment %}
 
                     </td>
                 </div>
+            </div>
+        </div>
                 
                     {% empty %}
-                    <!-- Modal -->
-                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                    <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        </div>
-                        <div class="modal-body">
-                            <table class="table">
-                                <thead>
-                                  <tr>
-                                    <th scope="col">Item Name</th>
-                                    <th scope="col">Price</th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                    {% for data in expired %}
-                                    <tr>
-                                        {% if data.status == 'Good' %}
-                                        <td>{{ data.food_title}}</td>
-                                        <td>{{ data.price}}</td>
-                                        {% endif %}
-                                    </tr>
-                                    {% endfor %}
-                                  
-                                </tbody>
-                              </table>
-                        </div>
-                    </div>
-                    </div>
-                </div>
                 <tr>
                     <td colspan="12" class="text-center bg-warning">No data...!!!</td>
                 </tr>
-
+            
             {% endfor %}
             </tr>
             <script>
@@ -214,6 +405,14 @@
 
             </tbody>
         </table>
-        <p><b>Total cost is ${{ totalcost }}</b></p>
+        <table>
+        <tfoot>
+            <tr>
+                
+                <td style="color:white; background-color:black;">TOTAL AMOUNT:<b style="padding-left:255px; color:white;">${{ totalcost }}</b></td>
+                
+            </tr>
+        </tfoot>
+    </table>
     </div>
 {% endblock %}
