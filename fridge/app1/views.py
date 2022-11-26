@@ -9,8 +9,13 @@ from django.shortcuts import render, redirect
 from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm
 from datetime import timedelta, date
 from django.http import JsonResponse
+from django.shortcuts import render
+from django.views.generic import View
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from django.core.mail import send_mail
 from django.conf import settings
+from django.db.models import Sum
 
 
 # Create your views here.
@@ -35,6 +40,13 @@ def list_item(request):
     counterexpired = 0
     counterwarning = 0
     countergood = 0
+    statusexpired = ''
+    statuswarning = ''
+    statusgood = ''
+    totalwasted = 0
+    count = 0
+    final_date = 0
+    
     for item in items:
         three_days_from_today = date.today()+timedelta(days=3)
         today = date.today()
@@ -44,12 +56,12 @@ def list_item(request):
         exp = Item.objects.filter(status = 'Expired')
 
         #<-------Filter-Data-only------->
-        total = Item.objects.all().count
-        countermeat = Item.objects.filter(food_type = 'meat')
-        counterdairy = Item.objects.filter(food_type = 'dairy')
-        counterbeverages = Item.objects.filter(food_type = 'beverages')
-        counterfrozveg = Item.objects.filter(food_type = 'frozen vegetables')
-        counterfruits = Item.objects.filter(food_type = 'fruits')
+        total = Item.objects.filter(author=request.user.id).all().count
+        countermeat = Item.objects.filter(author=request.user.id).filter(food_type = 'meat')
+        counterdairy = Item.objects.filter(author=request.user.id).filter(food_type = 'dairy')
+        counterbeverages = Item.objects.filter(author=request.user.id).filter(food_type = 'beverages')
+        counterfrozveg = Item.objects.filter(author=request.user.id).filter(food_type = 'frozen vegetables')
+        counterfruits = Item.objects.filter(author=request.user.id).filter(food_type = 'fruits')
         prices = Item.objects.filter(author=request.user.id).values('price')
         totalcost = 0
         for p in prices:
@@ -58,17 +70,32 @@ def list_item(request):
 
         if valid_to < today:
             item.status = 'Expired'
+            totalwasted += item.price
             counterexpired += 1
+            exp = Item.objects.filter(author=request.user.id).filter(status = 'Expired').values('price')
+            statusexpired = (item,exp)
 
         elif valid_to <= three_days_from_today:
             
             item.status = 'Warning'
+            count += item.price
+            final_date = (valid_to - date.today()).days
             counterwarning += 1
+            war = Item.objects.filter(author=request.user.id).filter(status = 'Warning')
+            final_date = (item.valid_to - date.today()).days
+            print(final_date)
+            statuswarning = (item,war)
+
 
         else:
             
             item.status = 'Good'
             countergood  += 1
+            goo = Item.objects.filter(author=request.user.id).filter(status = 'Good')
+            statusgood = (item,goo)
+    totalcount = counterexpired + counterwarning
+
+
 
     context = {
         'items': items,
@@ -80,7 +107,13 @@ def list_item(request):
         'counterbeverages': counterbeverages,
         'counterfrozveg': counterfrozveg,
         'counterfruits': counterfruits,
-        'exp':exp,
+        'statusexpired': statusexpired,
+        'statuswarning': statuswarning,
+        'statusgood': statusgood,
+        'totalcount': totalcount,
+        'final_date': final_date,
+        'totalwasted':totalwasted,
+        'count':count,
         'total' : total,
         'counterexpired':counterexpired,
         'form': form,
@@ -208,7 +241,7 @@ def meals(request):
     context = {
         'title': "Reccomended Meals",
     }
-    return render(request, 'meals.html', context=context)
+    return render(request, 'data.html', context=context)
 
 
 @login_required(login_url='/login/')
@@ -239,3 +272,17 @@ def item_update_quantity(request, pk):
             # client. Anyway these will not occur in this current situation.
         return JsonResponse(status=400, data={"message": "quantity is required!"})
     return JsonResponse(status=405, data={"message": "only post requests are allowed"})
+
+# Pie Chart Functionality
+def Chart(request):
+    labels = []
+    data = []
+
+    queryset = Item.objects.filter(author=request.user.id).order_by('quantity')
+    for chart in queryset:
+        labels.append(chart.food_type)
+        data.append(chart.quantity)
+    return render(request, 'chart_test.html',{
+        'labels': labels,
+        'data': data
+    })

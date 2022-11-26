@@ -30,6 +30,12 @@ class Item(models.Model):
         ('meat', 'meat'),
         ('fruits', 'fruits'),
     )
+    STATUS = (
+        ('Expired', 'Expired'),
+        ('Warning', 'Warning'),
+        ('Good', 'Good')
+    )
+       
     author = models.ForeignKey(Profile, on_delete=models.CASCADE)
     food_type = models.CharField(max_length=100, choices=STATUS_CHOICES1)
     food_title = models.CharField(max_length=120)
@@ -39,7 +45,7 @@ class Item(models.Model):
     valid_from = models.DateField(auto_now=False, auto_now_add=False)
     valid_to = models.DateField(auto_now=False, auto_now_add=False)
     timestamp = models.DateTimeField(auto_now_add=True)
-    status = models.CharField(default='Good',max_length=100)
+    status = models.CharField(default='Good',max_length=100, choices=STATUS)
     delta = models.IntegerField(null=False, default=0)
 
     class Meta:

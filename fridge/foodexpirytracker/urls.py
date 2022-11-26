@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.urls import path, re_path as url
 from django.contrib.auth import views as auth_views
 from app1 import views as accounts_views
+from app1 import views
 from app1.views import list_item, meals, recipes, search, item_update, item_delete, profile, item_update_quantity
 from app1 import views as app1_views
 
@@ -15,7 +16,8 @@ urlpatterns = [
     path('delete/<int:pk>', item_delete, name='item_delete'),
     path("update-quantity/<int:pk>/", item_update_quantity),
     path('search/', search, name='search'),
-    path('meals/', meals,name='meals'),
+    path('chart_test/',views.Chart, name = 'chart_test'),
+    # path('api', views.ChartData, name = 'chart_test'),
     path('recipes/', recipes, name = 'recipes'),
 
     # account

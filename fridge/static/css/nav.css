@@ -25,7 +25,7 @@
 body {
     height: 100vh;
     background-color: var(--body-color);
-    background-image: url('../images/Kitchen6.jpeg');
+    background-image: url('../images/Kitchen6.jpg');
 }
 
 body.dark {
@@ -367,7 +367,7 @@ body.dark .search-field i {
 .btn-glyphicon {
     padding: 8px;
     background: #ffffff;
-    margin-right: 4px;
+    margin-right: 3px;
 }
 
 .icon-btn {
@@ -462,7 +462,7 @@ input[type=search] {
     height: 20px;
     width: 90px;
     padding-bottom: 33px;
-    margin-left: 557px;
+    margin-left: 560px;
     margin-top: 21px;
 }
 
@@ -470,10 +470,7 @@ input[type=search] {
     position: absolute;
     text-align: center;
     font-size: 1em;
-    color: #FFF;
     color: #333;
-    background-color: #ebebeb;
-    border: 1px solid #adadad;
     border-radius: 45px;
     height: 32px;
     width: 90px;
@@ -486,10 +483,6 @@ input[type=search] {
     position: absolute;
     text-align: center;
     font-size: 1em;
-    color: #FFF;
-    color: #333;
-    background-color: #ebebeb;
-    border: 1px solid #adadad;
     border-radius: 45px;
     height: 32px;
     width: 90px;
@@ -500,8 +493,8 @@ input[type=search] {
 
 .notification.icon .notification-number {
     position: absolute;
-    right: -5px;
-    top: -15px;
+    right: 75px;
+    top: -10px;
     z-index: 1;
     background: #cc2311;
     border: 3px solid #FFF;
@@ -520,7 +513,7 @@ input[type=search] {
 
 .notification1.icon1 .notification1-number1 {
     position: absolute;
-    right: -5px;
+    right: 120px;
     top: -15px;
     z-index: 1;
     background: #FFB81C;
@@ -540,7 +533,7 @@ input[type=search] {
 
 .notification2.icon2 .notification2-number2 {
     position: absolute;
-    right: -5px;
+    right: 190px;
     top: -15px;
     z-index: 1;
     background: green;
@@ -647,4 +640,26 @@ input[type=search] {
 
 .qtycss {
     padding-bottom: 60px;
+}
+
+.fa-stack[data-count]:after {
+    position: absolute;
+    right: 1%;
+    top: 1%;
+    content: attr(data-count);
+    font-size: 40%;
+    padding: .6em;
+    border-radius: 999px;
+    line-height: .75em;
+    color: white;
+    background: rgba(255, 0, 0, .85);
+    text-align: center;
+}
+
+hr {
+    border: 3px solid rgb(0, 0, 0);
+}
+
+.chartbox {
+    width: 400px;
 }

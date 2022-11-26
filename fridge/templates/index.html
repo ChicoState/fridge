@@ -197,7 +197,7 @@
                             <td>{{ data.food_type}}</td>
                             <td>{{ data.food_title}}</td>
                             <td>{{ data.price}}</td>
-                            <td>{{ data.quantity}}</td>                            
+                            <td>{{ data.quantity}}</td>   
                             {% endif %}
                         </tr>
                         {% empty %}
@@ -311,16 +311,14 @@
               </div>
             </div>
           </div>
-         
     <div class="container">
-        
         {#for more items#}
-        
+ 
         <table class="table table-hover border table-responsive">
             <thead>
             {% comment %} <table id="table"> {% endcomment %}
-                <table id="table">
-        <tr>
+        <table id="table" style="height:400px;">
+        <tr style="background-color:black; color:white;">
                 <th onclick = "sortTable(0)" scope="col">Photo</th>
                 <th onclick = "sortTable(1)" scope="col">Item Type</th>
                 <th onclick = "sortTable(2)" scope="col">Item Name</th>
@@ -333,6 +331,7 @@
         </tr>
             </thead>
                 <tbody class="res">
+                  
                 {% for item in items %}
                     <div class="row container">
                     <tr>
@@ -362,6 +361,7 @@
                     {% else %}
                     <td class="text-danger">Expired</td>
                     {% endif %}
+
 
                     <td>
                         <a href="{% url 'item_update' item.id %}"><i class="fa-solid fa-pen" style="color:#6BAD12;width: 30px; font-size:25px;"></i></a>
@@ -402,17 +402,18 @@
                   }
                 }
               </script>
-
             </tbody>
         </table>
         <table>
         <tfoot>
             <tr>
                 
-                <td style="color:white; background-color:black;">TOTAL AMOUNT:<b style="padding-left:255px; color:white;">${{ totalcost }}</b></td>
+                <td class="bottombar" style="color:white; background-color:green;">TOTAL AMOUNT:<b style="padding-left:255px; color:white;">${{ totalcost }}</b></td>
                 
             </tr>
         </tfoot>
     </table>
+    <p>{{totalwasted}}</p>
+    <p>{{count}}</p>
     </div>
 {% endblock %}

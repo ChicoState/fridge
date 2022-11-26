@@ -1,16 +1,13 @@
 {% load static %}
 <script src="https://kit.fontawesome.com/be7f532f58.js" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="{% static '/css/nav.css' %}">
-<script src="{% static '/js/nav.js' %}"></script>
-
-
-    <link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
+<link href='https://unpkg.com/boxicons@2.1.1/css/boxicons.min.css' rel='stylesheet'>
 <body>
     <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalToggleLabel">Expired</h5>
+              <h5 class="modal-title" id="exampleModalToggleLabel" style="padding-left: 170px;">Expired ({{counterexpired}})</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -22,17 +19,68 @@
                         <th scope="col">Item Name</th>
                         <th scope="col">Price</th>
                         <th scope="col">Quantity</th>
+                        <th scope="col">Status</th>
                       </tr>
                     </thead>
                     <tbody>
-                        {% for check in countermeat %}
+                        {% for check in items %}
                         <tr>
-                            {% if check.food_type == 'meat' %}
+                            {% if check.status == 'Expired' %}
                             <td><img src="{{ check.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;"></td>
                             <td>{{ check.food_type}}</td>
                             <td>{{ check.food_title}}</td>
                             <td>{{ check.price}}</td>
-                            <td>{{ check.quantity}}</td>                            
+                            <td>{{ check.quantity}}</td>
+                            <td style="color: red;">{{ check.status}}</td> 
+                            {% endif %}                        
+                        </tr>
+                        
+                        {% empty %} 
+                <tr>
+                    <td colspan="12" class="text-center bg-warning">No data...!!!</td>
+                </tr>
+    
+            {% endfor %}
+                      
+                    </tbody>
+                  </table>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-warning" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">Warning Items</button>
+              <button class="btn btn-success" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal" data-bs-dismiss="modal">Good Items</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalToggleLabel2" style="padding-left: 170px;">Warning ({{counterwarning}})</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Photo</th>
+                        <th scope="col">Item Type</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for check in items %}
+                        <tr>
+                            {% if check.status == 'Warning' %}
+                            <td><img src="{{ check.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;"></td>
+                            <td>{{ check.food_type}}</td>
+                            <td>{{ check.food_title}}</td>
+                            <td>{{ check.price}}</td>
+                            <td>{{ check.quantity}}</td>
+                            <td style="color: gold;">{{ check.status}}</td>                             
                             {% endif %}
                         </tr>
                         {% empty %}
@@ -45,28 +93,106 @@
                   </table>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">Open second modal</button>
+              <button class="btn btn-success" data-bs-target="#exampleModalToggle3" data-bs-toggle="modal" data-bs-dismiss="modal">Good Items</button>
+              <button class="btn btn-danger" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">Expired Items</button>
             </div>
           </div>
         </div>
       </div>
-      <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+      <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle3" role="button">Good Items</a>
+      <div class="modal fade" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel3" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalToggleLabel2">Modal 2</h5>
+              <h5 class="modal-title" id="exampleModalToggleLabel3" style="padding-left: 170px;">Good ({{countergood}})</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              Hide this modal and show the first with the button below.
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">Photo</th>
+                        <th scope="col">Item Type</th>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for check in items %}
+                        <tr>
+                            {% if check.status == 'Good' %}
+                            <td><img src="{{ check.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;"></td>
+                            <td>{{ check.food_type}}</td>
+                            <td>{{ check.food_title}}</td>
+                            <td>{{ check.price}}</td>
+                            <td>{{ check.quantity}}</td>
+                            <td style="color: green;">{{ check.status}}</td>                             
+                            {% endif %}
+                        </tr>
+                        {% empty %}
+                                <tr>
+                                    <td colspan="12" class="text-center bg-danger">No item found...!!!</td>
+                                </tr>
+                        {% endfor %}
+                      
+                    </tbody>
+                  </table>
             </div>
             <div class="modal-footer">
-              <button class="btn btn-primary" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">Back to first</button>
+              <button class="btn btn-danger" data-bs-target="#exampleModalToggle" data-bs-toggle="modal" data-bs-dismiss="modal">Expired Items</button>
+              <button class="btn btn-warning" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal" data-bs-dismiss="modal">Warning Items</button>
             </div>
           </div>
         </div>
       </div>
-      <a class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Open first modal</a>
+
+      <div class="modal fade" id="exampleModalnotify" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document" style="padding-left:530px; padding-top:45px;">
+          <div class="modal-content" style="width:360px;">
+            <div class="modal-header" style="background-color:red;height:50px;">
+              <h5 class="modal-title" id="exampleModalLabel" style="padding-left:90px; color:white; font-weight:bold;">Notifications ({{totalcount}})</h5>
+              <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+                
+                {% for i in items %}
+                    {% if i.status == 'Expired' %}
+                            <img src="{{ i.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;">
+                            <strong class="mr-auto">{{ i.food_title|capfirst}}</strong>
+                            <small style="float:right">11 mins ago
+                                <a href="{% url 'item_delete' i.pk %}"><i class="fa-solid fa-trash" style="color:#EC4747;width: 30px; font-size:15px;"></i></a>
+                            </small>
+                            <div class="toast-body">
+                            <center><p style="font-size:13px;">{{user.username|capfirst}} this item has been <b style="color:red;">expired</b> with <b>{{i.quantity}} quantity left.</b></p>
+                                <hr>
+                            </div>
+                    {% elif i.status == 'Warning' %}
+                            <img src="{{ i.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;">
+                            <strong class="mr-auto">{{ i.food_title|capfirst}}</strong>
+                            <small style="float:right">just now
+                            </small>
+                            <div class="toast-body">
+                            <center><p style="font-size:13px;">{{user.username|capfirst}} this item is going to <b style="color:gold;">expire soon</b> within <b>{{final_date}} days.</b></p>
+                                <hr style="border: 3px solid black;">
+                            </div>                                                
+                    {% endif %}
+                        
+                        {% empty %}
+                                <tr>
+                                  <td colspan="12" class="text-center bg-danger">No item found...!!!</td>
+                                 </tr>
+                    {% endfor %}
+                  
+            </div>
+          </div>
+        </div>
+      </div> 
+
+
     <nav>
         <div class="nav-bar">
             <i class='bx bx-menu sidebarOpen' ></i>
@@ -80,8 +206,8 @@
                 {% if user.is_authenticated %}
                 <ul class="nav-links">
                     <li><a href="{% url 'item_list' %}">Home</a></li>
+                    <li><a href="{% url 'chart_test' %}">Stats</a></li>
                     <li><a href="#">About</a></li>
-                    <li><a href="#">Services</a></li>
                     <div class="btn-group">
                         <button type="button" class="btn-btn navbtn dropdown-toggle" style="color: gold; font-weight: bold;" data-bs-toggle="dropdown"
                                 aria-expanded="false">Welcome back, {{ user.username|capfirst }}
@@ -99,23 +225,36 @@
                     <div class="dark-light">
                         <i class='bx bx-moon moon'></i>
                         <i class='bx bx-sun sun'></i>
-                    </div>
-                
-                
+                    </div>            
             </div>
             
             
             
-            <button class="center notification icon btn btn-default" data-bs-toggle="modal" data-bs-target="#exampleModalToggle"> Expired
-                <span class="notification-number">{{counterexpired}}</span>
+            <button class="center notification icon notification1 icon btn btn-default" data-bs-toggle="modal" data-bs-target="#exampleModalToggle" style="width:15%;"> Status
+                <span class="notification-number ">{{counterexpired}}</span>
             </button>
-            <button class="center notification1 icon1 btn btn-default"> Warning
+            <a class="center notification1 icon1">
                 <span class="notification1-number1">{{counterwarning}}</span>
-            </button>
-            <button class="center notification2 icon2 btn btn-default"> Good
+            </a>
+            <a class="center notification2 icon2">
                 <span class="notification2-number2">{{countergood}}</span>
-            </button>
-                    
+            </a>            
+                </div>
+                {% comment %} {% if totalcost > 9 %}
+                <span class="fa-stack fa-2x" data-count={{totalcount}}>
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-bell fa-stack-1x fa-inverse"></i>
+                </span>
+                {% elif %}
+
+                {% else %}
+
+                {% endif %} {% endcomment %}
+
+                   <span type="button" class="fa-stack fa-2x"  data-bs-toggle="modal" data-bs-target="#exampleModalnotify" data-count={{totalcount}}>
+                    <i class="fa fa-circle fa-stack-2x"></i>
+                    <i class="fa fa-bell fa-stack-1x fa-inverse"></i>
+                    </span> 
                 </div>
             </div>
         </div>
@@ -127,8 +266,7 @@
     {% endif %}
     </nav>
 <script>
-
-const body = document.querySelector("body"),
+      const body = document.querySelector("body"),
       nav = document.querySelector("nav"),
       modeToggle = document.querySelector(".dark-light"),
       searchToggle = document.querySelector(".searchToggle"),
@@ -172,5 +310,4 @@ body.addEventListener("click" , e =>{
     }
 });
 </script>
-
 </body>
