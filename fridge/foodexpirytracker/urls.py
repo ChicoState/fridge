@@ -16,9 +16,16 @@ urlpatterns = [
     path('delete/<int:pk>', item_delete, name='item_delete'),
     path("update-quantity/<int:pk>/", item_update_quantity),
     path('search/', search, name='search'),
-    path('chart_test/',views.Chart, name = 'chart_test'),
+    # path('chart_test/',views.Chart, name = 'chart_test'),
+    path('about/',views.about, name = 'about'),
+    path('chart/',views.chart, name = 'chart'),
+    path('chart_test1/',views.chart1, name = 'chart_test1'),
+    # path('chart_test1/',views.Chart1, name = 'chart_test1'),
+
+
     # path('api', views.ChartData, name = 'chart_test'),
     path('recipes/', recipes, name = 'recipes'),
+    path('meals/', meals, name = 'meals'),
 
     # account
     url(r'^signup/$', accounts_views.signup, name='signup'),

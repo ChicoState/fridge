@@ -15,7 +15,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.core.mail import send_mail
 from django.conf import settings
-from django.db.models import Sum
+from datetime import datetime
+import timeago
 
 
 # Create your views here.
@@ -45,12 +46,39 @@ def list_item(request):
     statusgood = ''
     totalwasted = 0
     count = 0
-    final_date = 0
+    
+
+    # valid = datetime(2022, 11, 30)
+    # right_now = datetime.now()
+    # now = right_now.strftime('%Y-%m-%d %H:%M:%S')
+    # answer = (timeago.format(valid, now))
+    # print(answer
+
     
     for item in items:
         three_days_from_today = date.today()+timedelta(days=3)
         today = date.today()
         valid_to = item.valid_to
+
+        #<-------Find Time-Ago Format------->
+        valid_date = valid_to
+        # For Expired
+        # Today's Date + Time
+        right_now = datetime.now()
+        now = right_now.strftime('%Y-%m-%d %H:%M:%S')
+        # Item Expired Date + Time
+        valid = valid_date.strftime('%Y-%m-%d %H:%M:%S')
+        item.humanize_time = (timeago.format(valid, now))
+
+        # For Warning
+        valid_date1 = valid_to
+        right_now1 = datetime.now()
+        add_days = right_now1 + timedelta(days = 3)
+        now1 = add_days.strftime('%Y-%m-%d %H:%M:%S')
+        # Item Expired Date + Time
+        valid1 = valid_date1.strftime('%Y-%m-%d %H:%M:%S')
+        item.humanize_time1 = (timeago.format(valid1, now1))
+
 
         #<-------Filter-Data-only------->
         exp = Item.objects.filter(status = 'Expired')
@@ -66,24 +94,32 @@ def list_item(request):
         totalcost = 0
         for p in prices:
             totalcost += p['price']
+            print(totalcost)
             
-
         if valid_to < today:
             item.status = 'Expired'
             totalwasted += item.price
             counterexpired += 1
             exp = Item.objects.filter(author=request.user.id).filter(status = 'Expired').values('price')
             statusexpired = (item,exp)
+        #     username = None
+        # if request.user.is_authenticated():
+        #         username = request.user.username
+        #         email = request.POST['email']
+        #         subject = 'Welcome to Fridge'
+        #         message = f'Hi, {username} we will help you to setup your Fridge'
+        #         from_email = settings.EMAIL_HOST_USER
+        #         recipient_list = [email] 
+        #         send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+
 
         elif valid_to <= three_days_from_today:
             
             item.status = 'Warning'
             count += item.price
-            final_date = (valid_to - date.today()).days
             counterwarning += 1
             war = Item.objects.filter(author=request.user.id).filter(status = 'Warning')
-            final_date = (item.valid_to - date.today()).days
-            print(final_date)
+            item.daystill = (item.valid_to - date.today()).days
             statuswarning = (item,war)
 
 
@@ -111,7 +147,6 @@ def list_item(request):
         'statuswarning': statuswarning,
         'statusgood': statusgood,
         'totalcount': totalcount,
-        'final_date': final_date,
         'totalwasted':totalwasted,
         'count':count,
         'total' : total,
@@ -239,16 +274,15 @@ def profile(request):
 @login_required(login_url='/login/')
 def meals(request):
     context = {
-        'title': "Reccomended Meals",
-    }
-    return render(request, 'data.html', context=context)
-
+         'title': "Reccomended Meals",
+     }
+    return render(request, 'meals.html', context=context)
 
 @login_required(login_url='/login/')
 def recipes(request):
     context = {
-        'title': "Reccomended Recipes",
-    }
+        'title': "About Us",
+}
     return render(request, 'recipes.html', context=context)
 
 
@@ -274,15 +308,75 @@ def item_update_quantity(request, pk):
     return JsonResponse(status=405, data={"message": "only post requests are allowed"})
 
 # Pie Chart Functionality
-def Chart(request):
-    labels = []
-    data = []
+# @login_required
+# def Chart(request):
+#     labels = []
+#     data = []
 
-    queryset = Item.objects.filter(author=request.user.id).order_by('quantity')
-    for chart in queryset:
-        labels.append(chart.food_type)
-        data.append(chart.quantity)
-    return render(request, 'chart_test.html',{
-        'labels': labels,
-        'data': data
+#     queryset = Item.objects.filter(author=request.user.id).order_by('quantity')
+#     for chart in queryset:
+#         labels.append(chart.food_type)
+#         data.append(chart.quantity)
+#     return render(request, 'chart_test.html',{
+#         'labels': labels,
+#         'data': data
+#     })
+
+# Pie Chart Functionality
+# @login_required
+# def Chart1(request):
+#     # labels = []
+#     # data = []
+#     money = 0
+#     expense = Item.objects.filter(author=request.user.id).values('price')
+#     exitems = Item.objects.filter(author=request.user.id).filter(status = 'Expired')
+#     for e in expense:
+#         money += e['price']
+#         print("Hello")
+#             # labels.append(chart1.food_type)
+#             # data.append(chart1.price)
+#     for k in exitems:
+#         print(k)
+#     return render(request, 'chart_test1.html',{
+#         # 'labels': labels,
+#         # 'data': data
+#         'money': money,
+#     })
+@login_required
+def about(request):
+      
+    # render function takes argument  - request
+    # and return HTML as response
+    return render(request, "about.html")
+
+def chart(request):
+    get_data = Item.objects.filter(author=request.user.id).all()
+    get_price = Item.objects.filter(author=request.user.id).values('price')
+    # render function takes argument  - request
+    # and return HTML as response
+    return render(request, "chart_test.html",context={
+        'get_data':get_data,
+        'get_price':get_price,
     })
+
+def chart1(request):
+    paisa = 0
+    # three_days_from_today = date.today()+timedelta(days=3)
+    # today = date.today()
+    # valid_to = item.valid_to
+    total_price = Item.objects.filter(author=request.user.id).values('price')
+    # total_exp = Item.objects.filter(author=request.user.id).values('price')
+    for karan in total_price:
+        paisa += karan['price']
+        print(paisa)
+    
+
+    # render function takes argument  - request
+    # and return HTML as response
+    return render(request, "chart_test1.html",context={
+        # 'get_data':get_data,
+        # 'get_price':get_price,
+    })
+
+    
+

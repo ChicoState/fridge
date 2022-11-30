@@ -1,0 +1,33 @@
+#table {
+    display: block;
+    height: 300px;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.modal-body {
+    display: block;
+    height: 450px;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    background-color: rgb(218, 188, 148);
+}
+
+.modal-body1 {
+    display: block;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.bottombar {
+    width: 1072px;
+    height: 40px;
+}
+
+tfoot {
+    background-color: green;
+    color: white;
+}

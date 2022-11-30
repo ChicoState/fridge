@@ -19,6 +19,7 @@
     </style>
 
     <script src="https://kit.fontawesome.com/ddf411465e.js" crossorigin="anonymous"></script>    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/new.css' %}">
     <link rel="stylesheet" href="{% static 'css/nav.css' %}">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link rel="stylesheet"href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
@@ -48,8 +49,8 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
 
-                        <div class="modal-body">
-                            <form action="" method="post" enctype="multipart/form-data">
+                        <div class="modal-body7">
+                            <form action="" method="post" enctype="multipart/form-data" style="padding:20px;">
                                 {% csrf_token %}
                                 {{ form|crispy }}
                                 <div class="modal-footer">
@@ -80,7 +81,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body1">
                 <table class="table">
                     <thead>
                       <tr>
@@ -129,7 +130,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body1">
                 <table class="table">
                     <thead>
                       <tr>
@@ -178,7 +179,7 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body1">
                 <table class="table">
                     <thead>
                       <tr>
@@ -226,7 +227,7 @@
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body1">
                         <table class="table">
                             <thead>
                               <tr>
@@ -273,7 +274,7 @@
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body1">
                     <table class="table">
                         <thead>
                           <tr>
@@ -317,7 +318,7 @@
         <table class="table table-hover border table-responsive">
             <thead>
             {% comment %} <table id="table"> {% endcomment %}
-        <table id="table" style="height:400px;">
+        <table id="table">
         <tr style="background-color:black; color:white;">
                 <th onclick = "sortTable(0)" scope="col">Photo</th>
                 <th onclick = "sortTable(1)" scope="col">Item Type</th>
@@ -369,8 +370,9 @@
 
                     </td>
                 </div>
-            </div>
+            <div>
         </div>
+
                 
                     {% empty %}
                 <tr>
@@ -378,7 +380,11 @@
                 </tr>
             
             {% endfor %}
+
             </tr>
+        </tbody>
+      </table>
+
             <script>
                 function startDictation() {
                   if (window.hasOwnProperty('webkitSpeechRecognition')) {
@@ -402,18 +408,17 @@
                   }
                 }
               </script>
-            </tbody>
-        </table>
-        <table>
-        <tfoot>
-            <tr>
-                
-                <td class="bottombar" style="color:white; background-color:green;">TOTAL AMOUNT:<b style="padding-left:255px; color:white;">${{ totalcost }}</b></td>
-                
-            </tr>
-        </tfoot>
-    </table>
+              <table>
+              <tfoot>
+                <tr>
+                  <div class="bottombar" style="color:white; background-color:green; padding-top:5px; padding-left:15px; width:1100px;"><b>TOTAL AMOUNT:</b><b style="padding-left:255px; color:white;">${{ totalcost }}</b></div>
+                </tr>
+              </tfoot>
+            </table>
+                {% comment %} <div class="bottombar" style="color:white; background-color:green;">TOTAL AMOUNT:<b style="padding-left:255px; color:white;">${{ totalcost }}</b></div> {% endcomment %}
+          
     <p>{{totalwasted}}</p>
     <p>{{count}}</p>
+    <p>{{money}}</p>
     </div>
 {% endblock %}

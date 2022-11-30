@@ -47,6 +47,10 @@ class Item(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     status = models.CharField(default='Good',max_length=100, choices=STATUS)
     delta = models.IntegerField(null=False, default=0)
+    daystill = models.IntegerField(null=False, default=0)
+    humanize_time = models.IntegerField(null=False, default=0)
+    humanize_time1 = models.IntegerField(null=False, default=0)
+
 
     class Meta:
         verbose_name_plural = "Items"
