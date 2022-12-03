@@ -336,12 +336,12 @@
                 {% for item in items %}
                     <div class="row container">
                     <tr>
-                    <td style="width:90px"><img src="{{ item.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;"></td>
-                    <td>{{ item.food_type }}</td>
-                    <td>{{ item.food_title }} </td>
-                    <td>${{ item.price }}</td>
+                    <td style="width:5%"><img src="{{ item.photos.url }}" class="img2" alt="" style="width:50px; height:50px;"></td>
+                    <td style="width:13%">{{ item.food_type }}</td>
+                    <td style="width:25%">{{ item.food_title }} </td>
+                    <td style="width:10%">${{ item.price }}</td>
                     <td>
-                <div class="row container qtycss">
+                <div class="row container qtycss" style="padding-left:20px;">
                     <div class="col-md-4 ">
                         <div class = "input-group text-center mb-2" style="width:130px;" data-id="{{ item.pk }}">
                             <button class="input-group-text changeQuantity decrement-btn" style="height: 40px;">-</button>
@@ -351,20 +351,20 @@
                     </div>
                 </div>
                     </td>
-                    <td>{{ item.valid_from }}</td>
-                    <td>{{ item.valid_to }}</td>
+                    <td style="width:13%">{{ item.valid_from }}</td>
+                    <td style="width:13%">{{ item.valid_to }}</td>
 
 
                     {% if item.status == 'Good' %}
-                    <td class="text-success">Good</td>
+                    <td class="text-success" style="width:10%">Good</td>
                     {% elif item.status == 'Warning' %}
-                    <td class="text-warning">Warning</td>
+                    <td class="text-warning" style="width:10%">Warning</td>
                     {% else %}
-                    <td class="text-danger">Expired</td>
+                    <td class="text-danger" style="width:10%">Expired</td>
                     {% endif %}
 
 
-                    <td>
+                    <td style="width:10%">
                         <a href="{% url 'item_update' item.id %}"><i class="fa-solid fa-pen" style="color:#6BAD12;width: 30px; font-size:25px;"></i></a>
                         <a href="{% url 'item_delete' item.pk %}"><i class="fa-solid fa-trash" style="color:#EC4747;width: 30px; font-size:25px;"></i></a>
 
@@ -376,7 +376,7 @@
                 
                     {% empty %}
                 <tr>
-                    <td colspan="12" class="text-center bg-warning">No data...!!!</td>
+                    <td colspan="12" class="text-center bg-warning" style="width:70%" >No data...!!!</td>
                 </tr>
             
             {% endfor %}
@@ -411,14 +411,9 @@
               <table>
               <tfoot>
                 <tr>
-                  <div class="bottombar" style="color:white; background-color:green; padding-top:5px; padding-left:15px; width:1100px;"><b>TOTAL AMOUNT:</b><b style="padding-left:255px; color:white;">${{ totalcost }}</b></div>
+                  <div class="bottombar" style="color:white; background-color:green; padding-top:5px; padding-left:15px; width:1170px;"><b>TOTAL AMOUNT:</b><b style="padding-left:255px; color:white;">${{ totalcost }}</b></div>
                 </tr>
               </tfoot>
             </table>
-                {% comment %} <div class="bottombar" style="color:white; background-color:green;">TOTAL AMOUNT:<b style="padding-left:255px; color:white;">${{ totalcost }}</b></div> {% endcomment %}
-          
-    <p>{{totalwasted}}</p>
-    <p>{{count}}</p>
-    <p>{{money}}</p>
     </div>
 {% endblock %}

@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
+<style>
+    #updbtn{
+        margin-right:10px;
+    }
+</style>
 
 
     <div class="container mt-5">
@@ -12,9 +17,9 @@
                 <form action="" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form|crispy }}
-                    <div class="modal-footer mt-2 mb-3 ">
-                        <a href="/"><button type="button_update" class="btn btn-secondary" data-bs-dismiss="modal">Close
-                        </button></a>
+                    <div class="modal-footer ">
+                        {% comment %} <button type="button_update" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> {% endcomment %}
+                        <button type="submit" class="btn btn-danger" id="updbtn" data-bs-dismiss="modal">Close</button>
                         <button type="submit" class="btn btn-primary ">Update</button>
                     </div>
 

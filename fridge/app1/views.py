@@ -1,3 +1,4 @@
+import collections
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -10,9 +11,6 @@ from .forms import SignUpForm, UserUpdateForm, ProfileUpdateForm
 from datetime import timedelta, date
 from django.http import JsonResponse
 from django.shortcuts import render
-from django.views.generic import View
-from rest_framework.views import APIView
-from rest_framework.response import Response
 from django.core.mail import send_mail
 from django.conf import settings
 from datetime import datetime
@@ -46,14 +44,13 @@ def list_item(request):
     statusgood = ''
     totalwasted = 0
     count = 0
-    
-
-    # valid = datetime(2022, 11, 30)
-    # right_now = datetime.now()
-    # now = right_now.strftime('%Y-%m-%d %H:%M:%S')
-    # answer = (timeago.format(valid, now))
-    # print(answer
-
+    total = Item.objects.filter(author=request.user.id).all().count
+    countermeat = Item.objects.filter(author=request.user.id).filter(food_type = 'meat')
+    counterdairy = Item.objects.filter(author=request.user.id).filter(food_type = 'dairy')
+    counterbeverages = Item.objects.filter(author=request.user.id).filter(food_type = 'beverages')
+    counterfrozveg = Item.objects.filter(author=request.user.id).filter(food_type = 'frozen vegetables')
+    counterfruits = Item.objects.filter(author=request.user.id).filter(food_type = 'fruits')
+    prices = Item.objects.filter(author=request.user.id).values('price')
     
     for item in items:
         three_days_from_today = date.today()+timedelta(days=3)
@@ -84,17 +81,9 @@ def list_item(request):
         exp = Item.objects.filter(status = 'Expired')
 
         #<-------Filter-Data-only------->
-        total = Item.objects.filter(author=request.user.id).all().count
-        countermeat = Item.objects.filter(author=request.user.id).filter(food_type = 'meat')
-        counterdairy = Item.objects.filter(author=request.user.id).filter(food_type = 'dairy')
-        counterbeverages = Item.objects.filter(author=request.user.id).filter(food_type = 'beverages')
-        counterfrozveg = Item.objects.filter(author=request.user.id).filter(food_type = 'frozen vegetables')
-        counterfruits = Item.objects.filter(author=request.user.id).filter(food_type = 'fruits')
-        prices = Item.objects.filter(author=request.user.id).values('price')
         totalcost = 0
         for p in prices:
             totalcost += p['price']
-            print(totalcost)
             
         if valid_to < today:
             item.status = 'Expired'
@@ -102,25 +91,13 @@ def list_item(request):
             counterexpired += 1
             exp = Item.objects.filter(author=request.user.id).filter(status = 'Expired').values('price')
             statusexpired = (item,exp)
-        #     username = None
-        # if request.user.is_authenticated():
-        #         username = request.user.username
-        #         email = request.POST['email']
-        #         subject = 'Welcome to Fridge'
-        #         message = f'Hi, {username} we will help you to setup your Fridge'
-        #         from_email = settings.EMAIL_HOST_USER
-        #         recipient_list = [email] 
-        #         send_mail(subject, message, from_email, recipient_list, fail_silently=False)
-
 
         elif valid_to <= three_days_from_today:
             
             item.status = 'Warning'
             count += item.price
             counterwarning += 1
-            war = Item.objects.filter(author=request.user.id).filter(status = 'Warning')
             item.daystill = (item.valid_to - date.today()).days
-            statuswarning = (item,war)
 
 
         else:
@@ -182,7 +159,6 @@ def item_delete(request, pk):
 # Search Functionality
 def search(request):
     items = Item.objects.order_by('valid_to')
-    print(items)
     if request.method == 'POST':
         form = ItemForm(request.POST, request.FILES)
         if form.is_valid():
@@ -271,21 +247,6 @@ def profile(request):
     return render(request, 'my_account.html', context)
 
 
-@login_required(login_url='/login/')
-def meals(request):
-    context = {
-         'title': "Reccomended Meals",
-     }
-    return render(request, 'meals.html', context=context)
-
-@login_required(login_url='/login/')
-def recipes(request):
-    context = {
-        'title': "About Us",
-}
-    return render(request, 'recipes.html', context=context)
-
-
 @login_required
 def item_update_quantity(request, pk):
     """Update item quantity view.
@@ -307,41 +268,6 @@ def item_update_quantity(request, pk):
         return JsonResponse(status=400, data={"message": "quantity is required!"})
     return JsonResponse(status=405, data={"message": "only post requests are allowed"})
 
-# Pie Chart Functionality
-# @login_required
-# def Chart(request):
-#     labels = []
-#     data = []
-
-#     queryset = Item.objects.filter(author=request.user.id).order_by('quantity')
-#     for chart in queryset:
-#         labels.append(chart.food_type)
-#         data.append(chart.quantity)
-#     return render(request, 'chart_test.html',{
-#         'labels': labels,
-#         'data': data
-#     })
-
-# Pie Chart Functionality
-# @login_required
-# def Chart1(request):
-#     # labels = []
-#     # data = []
-#     money = 0
-#     expense = Item.objects.filter(author=request.user.id).values('price')
-#     exitems = Item.objects.filter(author=request.user.id).filter(status = 'Expired')
-#     for e in expense:
-#         money += e['price']
-#         print("Hello")
-#             # labels.append(chart1.food_type)
-#             # data.append(chart1.price)
-#     for k in exitems:
-#         print(k)
-#     return render(request, 'chart_test1.html',{
-#         # 'labels': labels,
-#         # 'data': data
-#         'money': money,
-#     })
 @login_required
 def about(request):
       
@@ -350,33 +276,259 @@ def about(request):
     return render(request, "about.html")
 
 def chart(request):
-    get_data = Item.objects.filter(author=request.user.id).all()
-    get_price = Item.objects.filter(author=request.user.id).values('price')
+    get_all1 = Item.objects.filter(author=request.user.id).all()
+    get_price_d = Item.objects.filter(author=request.user.id).values('price').filter(food_type = 'dairy')
+    get_price_f = Item.objects.filter(author=request.user.id).values('price').filter(food_type = 'fruits')
+    get_price_m = Item.objects.filter(author=request.user.id).values('price').filter(food_type = 'meat')
+    get_price_b = Item.objects.filter(author=request.user.id).values('price').filter(food_type = 'beverages')
+    get_price_fv = Item.objects.filter(author=request.user.id).values('price').filter(food_type = 'frozen vegetables')
+
+    # get_data = Item.objects.filter(author=request.user.id).values('food_type')
+    for all in get_all1:
+        #Meat
+        p_meat = 0
+        for pm in get_price_m:
+            p_meat += pm['price']
+
+         #Dairy
+        p_dairy = 0
+        if all.food_type == 'dairy':
+             for pd in get_price_d:
+                 p_dairy += pd['price']
+
+        #Fruits
+        p_fruits = 0
+        for pf in get_price_f:
+            p_fruits += pf['price']
+
+        #Beverages
+        p_beverages = 0
+        for pb in get_price_b:
+            p_beverages  += pb['price']
+
+        #Frozen Vegetables
+        p_frozenveg = 0
+        for pfv in get_price_fv:
+            p_frozenveg  += pfv['price']
+        
+
     # render function takes argument  - request
     # and return HTML as response
     return render(request, "chart_test.html",context={
-        'get_data':get_data,
-        'get_price':get_price,
+        'p_dairy':p_dairy,
+        'p_frozenveg':p_frozenveg,
+        'p_beverages':p_beverages,
+        'p_meat':p_meat,
+        'p_fruits':p_fruits,
+        'get_price_d':get_price_d,
+        'get_price_f':get_price_f,
+        'get_price_m':get_price_m,
+        'get_price_b':get_price_b,
+        'get_price_fv':get_price_fv,
+        'get_all1':get_all1,
     })
-
+@login_required
 def chart1(request):
-    paisa = 0
-    # three_days_from_today = date.today()+timedelta(days=3)
-    # today = date.today()
-    # valid_to = item.valid_to
-    total_price = Item.objects.filter(author=request.user.id).values('price')
-    # total_exp = Item.objects.filter(author=request.user.id).values('price')
-    for karan in total_price:
-        paisa += karan['price']
-        print(paisa)
+    TotalExpense = 0
+    totalwaste = 0
+    a = Item.objects.filter(author=request.user.id).order_by('valid_to')
+    for v in a:
+        today = date.today()
+        valid_to = v.valid_to
+        if valid_to < today:
+            v.status = 'Expired'
+            totalwaste += v.price
+    Total = Item.objects.filter(author=request.user.id).values('price')
+    for t in Total:
+        TotalExpense += t['price']
     
-
     # render function takes argument  - request
     # and return HTML as response
     return render(request, "chart_test1.html",context={
-        # 'get_data':get_data,
-        # 'get_price':get_price,
+        'totalwaste':totalwaste,
+        'TotalExpense':TotalExpense,
+        'Total': Total,
+        'a': a,
     })
+@login_required
+def chart2(request):
+    items = Item.objects.filter(author=request.user.id).order_by('valid_to')
+    # data  = Item.objects.filter(author=request.user.id)
+    if request.method == 'POST':
+        form = ItemForm(request.POST, request.FILES)
+        if form.is_valid():
+            # Return an object without saving to the DB
+            obj = form.save(commit=False)
+            obj.author = Profile.objects.get(
+                id=request.user.id)  # Add an author field which will contain current user's id
+            obj.save()  #
 
-    
+        messages.success(request, "Successfully Item added...!!!")
+        return redirect('item_list')
 
+    else:
+        form = ItemForm()
+    counterexpired = 0
+    counterwarning = 0
+    countergood = 0
+    statusexpired = ''
+    statuswarning = ''
+    statusgood = ''
+    totalwasted = 0
+    count = 0
+    hello = ''
+    total = Item.objects.filter(author=request.user.id).all().count
+    countermeat = Item.objects.filter(author=request.user.id).filter(food_type = 'meat')
+    counterdairy = Item.objects.filter(author=request.user.id).filter(food_type = 'dairy')
+    counterbeverages = Item.objects.filter(author=request.user.id).filter(food_type = 'beverages')
+    counterfrozveg = Item.objects.filter(author=request.user.id).filter(food_type = 'frozen vegetables')
+    counterfruits = Item.objects.filter(author=request.user.id).filter(food_type = 'fruits')
+    prices = Item.objects.filter(author=request.user.id).values('price')
+    f = 0
+    th = 0
+    m = 0
+    t = 0
+    w = 0
+    s = 0
+    sun = 0
+    for item in items:
+        three_days_from_today = date.today()+timedelta(days=3)
+        today = date.today()
+        valid_to = item.valid_to
+
+        #<-------Find Time-Ago Format------->
+        valid_date = valid_to
+        # For Expired
+        # Today's Date + Time
+        right_now = datetime.now()
+        now = right_now.strftime('%Y-%m-%d %H:%M:%S')
+        # Item Expired Date + Time
+        valid = valid_date.strftime('%Y-%m-%d %H:%M:%S')
+        item.humanize_time = (timeago.format(valid, now))
+
+        # For Warning
+        valid_date1 = valid_to
+        right_now1 = datetime.now()
+        add_days = right_now1 + timedelta(days = 3)
+        now1 = add_days.strftime('%Y-%m-%d %H:%M:%S')
+        # Item Expired Date + Time
+        valid1 = valid_date1.strftime('%Y-%m-%d %H:%M:%S')
+        item.humanize_time1 = (timeago.format(valid1, now1))
+
+
+        #<-------Filter-Data-only------->
+        exp = Item.objects.filter(status = 'Expired')
+
+        #<-------Filter-Data-only------->
+        totalcost = 0
+        for p in prices:
+            totalcost += p['price']
+            
+        if valid_to < today:
+            item.status = 'Expired'
+            totalwasted += item.price
+            counterexpired += 1
+            exp = Item.objects.filter(author=request.user.id).filter(status = 'Expired').values('price')
+            statusexpired = (item,exp)
+
+            daym = "Monday"
+            dt = item.valid_to
+            # get weekday name
+            yes = (dt.strftime('%A'))
+            if daym == yes:
+                m += 1
+
+            dayt = "Tuesday"
+            dt = item.valid_to
+            # get weekday name
+            yes = (dt.strftime('%A'))
+            if dayt == yes:
+                t += 1
+
+            dayw = "Wednesday"
+            dt = item.valid_to
+            # get weekday name
+            yes = (dt.strftime('%A'))
+            if dayw == yes:
+                w += 1
+
+            dayth = "Thursday"
+            dt = item.valid_to
+            # get weekday name
+            yes = (dt.strftime('%A'))
+            if dayth == yes:
+                th += 1
+
+            dayf = "Friday"
+            dt = item.valid_to
+            # get weekday name
+            yes = (dt.strftime('%A'))
+            if dayf == yes:
+                f += 1
+
+            days = "Saturday"
+            dt = item.valid_to
+            # get weekday name
+            yes = (dt.strftime('%A'))
+            if days == yes:
+                s += 1
+
+            daysun = "Sunday"
+            dt = item.valid_to
+            # get weekday name
+            yes = (dt.strftime('%A'))
+            if daysun == yes:
+                sun += 1
+            
+
+        elif valid_to <= three_days_from_today:
+            
+            item.status = 'Warning'
+            hello =  (item.food_title)
+            count += item.price
+            counterwarning += 1
+            war = Item.objects.filter(author=request.user.id).filter(status = 'Warning')
+            item.daystill = (item.valid_to - date.today()).days
+
+
+
+        else:
+            
+            item.status = 'Good'
+            countergood  += 1
+            goo = Item.objects.filter(author=request.user.id).filter(status = 'Good')
+            statusgood = (item,goo)
+    totalcount = counterexpired + counterwarning
+
+
+
+    context = {
+        'items': items,
+        'totalcost': totalcost,
+        'counterwarning': counterwarning,
+        'countergood': countergood,
+        'countermeat': countermeat,
+        'counterdairy': counterdairy,
+        'counterbeverages': counterbeverages,
+        'counterfrozveg': counterfrozveg,
+        'counterfruits': counterfruits,
+        'statusexpired': statusexpired,
+        'statuswarning': statuswarning,
+        'statusgood': statusgood,
+        'totalcount': totalcount,
+        'totalwasted':totalwasted,
+        'count':count,
+        'total' : total,
+        'hello':hello,
+        'counterexpired':counterexpired,
+        'form': form,
+        'f':f,
+        'th':th,
+        'm':m,
+        't':t,
+        'w':w,
+        's':s,
+        'sun':sun,
+
+    }
+    return render(request, 'chart_test2.html', context)

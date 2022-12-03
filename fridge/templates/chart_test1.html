@@ -4,7 +4,15 @@
 {% load static %}
  <style>
 	* body{
-		background-color: white;
+		width: 100%;
+		height: 100vh;
+		background: linear-gradient(
+		to top,
+		white 0%,
+		white 75%,
+		gold 50%,
+		gold 100%
+  );
 	}
 	.chartbox{
 		width:400px;
@@ -19,6 +27,7 @@
 	gap: 0.5rem;
 	align-items: center;
 	justify-content: center;
+	padding-top:100px;
 }
 
 .boxdata {
@@ -50,31 +59,14 @@
 	z-index: 1;
 }
 
-.boxdata:first-of-type {
-	border-top-left-radius: 50%;
-	border-top-right-radius: 5%;
-	border-bottom-left-radius: 50%;
-	border-bottom-right-radius: 5%;
-}
-
-.boxdata:last-of-type {
-	border-top-left-radius: 5%;
-	border-top-right-radius: 50%;
-	border-bottom-left-radius: 5%;
-	border-bottom-right-radius: 50%;
-}
 .row{
 	padding-left:500px;
 }
 </style>
-<center><h1>Welcome to Chat JS</h1></center>
 <div class="cont">
-	<div class="boxdata"><a class="boxlink" href="{% url 'chart' %}"></a>Home</div>
-	<div class="boxdata"><a class="boxlink" href="{% url 'chart_test1' %}"></a>Waste</div>
-	<div class="boxdata"><a class="boxlink" href="https://www.wikipedia.com/" target="_blank" title="Wikipedia"></a>Most Used</div>
-	<div class="boxdata"><a class="boxlink" href="https://www.facebook.com/" target="_blank" title="Facebook"></a>Weekly</div>
-	<div class="boxdata"><a class="boxlink" href="https://www.youtube.com/" target="_blank" title="Youtube"></a>Monthly</div>
-	<div class="boxdata"><a class="boxlink" href="https://www.nasa.com/" target="_blank" title="NASA"></a>Yearly</div>
+	<div class="boxdata"><a class="boxlink" href="{% url 'chart' %}"></a>Categories</div>
+	<div class="boxdata"><a class="boxlink" href="{% url 'chart_test1' %}"></a>Wastage</div>
+	<div class="boxdata"><a class="boxlink" href="{% url 'chart_test2' %}"></a>Weekly</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div class="row ">
@@ -89,35 +81,18 @@
                         data: {
                             labels:  ["Total", "Expired"],
                     datasets: [{
-                        label: 'Number of Products',
-                        data: [{% for get_price in get_price  %} {{get_price.price}}, {% endfor %}],
+                        label: 'Total cost',
+                        data: [{{TotalExpense}},{{totalwaste}}],
                         backgroundColor: [
-                            'rgba(255, 99, 132, 1)',
-                            'rgba(54, 162, 235, 1)',
-                            'rgba(255, 206, 86, 1)',
-                            'rgba(75, 192, 192, 1)',
-                            'rgba(153, 102, 255, 1)',
-                            'rgba(255, 159, 64, 1)',
-							'rgba(205,92,92)',
-							'rgba(240,128,128)',
-							'rgba(233,150,122)',
-							'rgba(250,128,114)',
-							'rgba(255,160,122)',
-							'rgba(255,69,0)',
-							'rgba(255,140,0)',
-							'rgba(255,165,0)',
-							'rgba(255,215,0)',
-							'rgba(184,134,11)',
-							'rgba(218,165,32)',
-							'rgba(238,232,170)',
-							'rgba(189,183,107)',
-							'rgba(240,230,140)',
-							'rgba(128,128,0)',
-							'rgba(255,255,0)',
-							'rgba(154,205,50)',
-							'rgba(85,107,47)',
-							'rgba(107,142,35)',
-							'rgba(124,252,0)',
+						'rgba(60, 179, 113)',
+						'rgba(255, 0, 0)',
+						'rgba(54, 162, 235, 1)',
+						'rgba(255, 206, 86, 1)',
+						'rgba(153, 102, 255, 1)',
+						'rgba(255, 159, 64, 1)',
+
+
+
                         ],
                             borderColor: [
                                 'rgba(255, 99, 132, 1)',
@@ -131,15 +106,19 @@
                     }]
                         },
                     options: {
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true
-                                }
-                            }]
-                        }
+                        plugins: {
+							subtitle: {
+								display: true,
+								text: 'Track Waste Money',
+								color: 'black',
+								font: {
+									size: 30
+								}
+							}
+						}
                     }
                     });
+			
                 </script>
             </div>
         </div>

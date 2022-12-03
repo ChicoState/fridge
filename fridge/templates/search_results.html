@@ -46,7 +46,6 @@
     </div>
 
     <div class="container">
-        
             <thead>
                 <nav class="navbar navbar-light navsearch">
                     <h5 style="color:white; font-weight:bold; font-size:20px; padding-left:30px; padding-bottom: 30px;" class="page-header"><a href="{% url 'item_list' %}"><img src="{% static 'images/left-arrow.png' %}" alt="left arrow" height="50" width="50"></a> Home</h5><h1 style="color: #037d50;
@@ -55,9 +54,8 @@
                     padding-right: 580px;
                     padding-bottom: 30px;">Search Items</h1>
                     
-            {% comment %} <table id="table"> {% endcomment %}
                 <table id="table">
-        <tr>
+        <tr style="background-color:black; color:white;">
                 <th onclick = "sortTable(0)" scope="col">Photo</th>
                 <th onclick = "sortTable(1)" scope="col">Item Type</th>
                 <th onclick = "sortTable(2)" scope="col">Item Name</th>
@@ -69,30 +67,27 @@
                 <th scope="col">Action</th>
         </tr>
             </thead>
-            {% comment %} <table id="table"> {% endcomment %}
                 <tbody class="res">
-            {% comment %} <table id="table"> {% endcomment %}
                 {% for item in item_obj %}
                     <div class="row container">
                     <tr>
-                    <td style="width:90px"><img src="{{ item.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;"></td>
-                    {% comment %} <td>{{ user.username }}</td> {% endcomment %}
-                    <td>{{ item.food_type }}</td>
-                    <td>{{ item.food_title }} </td>
-                    <td>${{ item.price }}</td>
-                    <td>{{ item.quantity }}</td>
-                    <td>{{ item.valid_from }}</td>
-                    <td>{{ item.valid_to }}</td>
+                        <td style="width:5%"><img src="{{ item.photos.url }}" class="img2" alt="" style="width:50px; height:50px;"></td>
+                        <td style="width:13%">{{ item.food_type }}</td>
+                        <td style="width:25%">{{ item.food_title }} </td>
+                        <td style="width:10%">${{ item.price }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td style="width:13%">{{ item.valid_from }}</td>
+                        <td style="width:13%">{{ item.valid_to }}</td>
 
 
                     {% if item.status == 'Good' %}
-                    <td class="text-success">Good</td>
+                    <td class="text-success" style="width:10%">Good</td>
                     {% elif item.status == 'Warning' %}
-                    <td class="text-warning">Warning</td>
+                    <td class="text-warning" style="width:10%">Warning</td>
                     {% else %}
-                    <td class="text-danger">Expired</td>
+                    <td class="text-danger" style="width:10%">Expired</td>
                     {% endif %}
-                    <td>
+                    <td style="width:10%">
                         <a href="{% url 'item_delete' item.pk %}"><i class="fa-solid fa-trash" style="color:#EC4747;width: 30px; font-size:25px;"></i></a>
                     </td>
                 </div>
@@ -101,7 +96,7 @@
                 
                     {% empty %}
                 <tr>
-                    <td colspan="12" class="text-center bg-warning">No data...!!!</td>
+                    <td colspan="12" class="text-center bg-warning"  style="width:50%">No item found...!!!</td>
                 </tr>
             {% endfor %}
 
@@ -110,7 +105,6 @@
 
             </tbody>
         </table>
-        
     </div>
 
 {% endblock %}

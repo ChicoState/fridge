@@ -15,7 +15,7 @@
   );
 	}
 	.chartbox{
-		width:500px;
+		width:400px;
 		margin-left:485px;
 	
 	}
@@ -27,7 +27,7 @@
 	gap: 0.5rem;
 	align-items: center;
 	justify-content: center;
-	padding-top:100px;
+    padding-top:100px;
 }
 
 .boxdata {
@@ -73,16 +73,16 @@
     <div class="col-md-6 my-4">
         <div class="bg-white">
             <div class="card-body">
-                <canvas id="myChart1" width = "483px" height="300"></canvas>
+                <canvas id="myChart1" width="400" height="300"></canvas>
                 <script>
                     var ctx = document.getElementById('myChart1').getContext('2d');
                     var myChart1 = new Chart(ctx, {
-                        type: 'pie',
+                        type: 'bar',
                         data: {
-                            labels:  ["Meat","dairy","Beverages","Frozen Veg","Fruits"],
+                            labels:  ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
                     datasets: [{
-                        label: 'cost',
-                        data: [{{p_meat}}, {{p_dairy}}, {{p_beverages}}, {{p_frozenveg}}, {{p_fruits}}],
+                        label: 'Expired Items',
+                        data: [{{m}},{{t}},{{w}},{{th}},{{f}},{{s}},{{sun}}],
                         backgroundColor: [
 						'rgba(60, 179, 113)',
 						'rgba(255, 0, 0)',
@@ -90,9 +90,6 @@
 						'rgba(255, 206, 86, 1)',
 						'rgba(153, 102, 255, 1)',
 						'rgba(255, 159, 64, 1)',
-
-
-
                         ],
                             borderColor: [
                                 'rgba(255, 99, 132, 1)',
@@ -109,7 +106,7 @@
                         plugins: {
 							subtitle: {
 								display: true,
-								text: 'Overall Categories by Price',
+								text: 'Weakly Expiry Status',
 								color: 'black',
 								font: {
 									size: 30
@@ -124,3 +121,4 @@
         </div>
     </div>
   {% endblock %}
+  
