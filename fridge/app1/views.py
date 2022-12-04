@@ -277,6 +277,11 @@ def about(request):
     return render(request, "about.html")
 
 def chart(request):
+    p_dairy = 0
+    p_meat = 0
+    p_fruits = 0
+    p_beverages = 0
+    p_frozenveg = 0
     get_all1 = Item.objects.filter(author=request.user.id).all()
     get_price_d = Item.objects.filter(author=request.user.id).values('price').filter(food_type = 'dairy')
     get_price_f = Item.objects.filter(author=request.user.id).values('price').filter(food_type = 'fruits')
