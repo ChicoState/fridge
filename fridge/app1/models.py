@@ -1,10 +1,6 @@
-import profile
-
 from django.contrib.auth.models import User
 from django.db import models
-
 from PIL import Image
-import datetime
 
 
 class Profile(models.Model):
