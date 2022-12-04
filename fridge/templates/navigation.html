@@ -241,7 +241,7 @@
                             <img src="{{ i.photos.url }}" class="img2" alt="" style="border-radius: 50%; width:50px; height:50px;">
                             <strong class="mr-auto">{{ i.food_title|capfirst}}</strong>
                             <a href="{% url 'item_delete' i.pk %}"><i class="fa-solid fa-trash" style="color:#EC4747;width: 30px; font-size:15px;"></i></a>
-                            <small style="float:right">{{i.humanize_time}}
+                            <small style="float:right">{{i.humanize_time}} 
                             </small>
                             <div class="toast-body">
                             <center><p style="font-size:13px;">{{user.username|capfirst}} this item has been <b style="color:red;">expired</b> with <b>{{i.quantity}} quantity left.</b></p>

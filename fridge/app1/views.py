@@ -43,6 +43,7 @@ def list_item(request):
     statuswarning = ''
     statusgood = ''
     totalwasted = 0
+    totalcost = 0
     count = 0
     total = Item.objects.filter(author=request.user.id).all().count
     countermeat = Item.objects.filter(author=request.user.id).filter(food_type = 'meat')
