@@ -47,12 +47,20 @@ $(venv) python manage.py runserver
 http://127.0.0.1:8000/
 ```
 
-
-### Step 6: login admin user id and password :
+### Step 6: User login :
 
 ```
-user id : jai
-password : jai..
-admin mail  : admin123@gmail.com
+user id : Bob
+password : test123$
+email-id  : bob@gmail.com
+
+```
+
+### Step 7: login admin user id and password :
+
+```
+Username : Fridge
+password : Fridge123$
+admin mail  : fridge@gmail.com
 
 ```
