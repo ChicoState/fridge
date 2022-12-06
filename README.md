@@ -6,19 +6,32 @@ Fridge was created by Amritvir Randhawa, Andrew Moskowitz, Karandeep Dhillon, an
 The purpose of this project was to provide a way to keep track of current food items, even when you’re not near your fridge. You can see which items are still good, expiring soon, or expired, so you know what you can count on eating when you get home, or use grocery items before they go bad. This encourages people to limit the amount of food that is wasted. This tool is also great for budgeting, as you can see how much money was “thrown away” with the food that went bad. Seeing how much money could be saved is a great motivator to only buy what is needed.
 
 # Features
--Authentication: Email/password to protect user data. 
--Add unilimited items in fridge. 
+i. Authentication: Email/password to protect user data. 
+
+ii. Add unilimited items in fridge. 
+
 iii. Sort items by name, date and type.
+
 iv. Track item expiry date and display status Expired Warning(3 days prior Expiry date) and Good. 
-v. Expired item diaplay on top. 
+
+v. Expired item diaplay on top.
+
 vi. Search items through voice recognition search-bar.
+
 vii. items separated by categories: dairy, frozen veg, meat, fruits, beverages.
+
 viii. edit/delete items 
+
 ix. User can track Expenses and Wastage money on expired items. 
+
 x. User can track fridge data with chart.
+
 xi. User can also track weekly expired data.
+
 xii. Notification - Send notification to user when item status is expire and warning. 
+
 xiii. User can change items QTY from inc and dec button. 
+
 xiv.  Send Welcome email when user register first time. 
 
 # To-do
