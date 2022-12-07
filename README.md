@@ -1,4 +1,4 @@
-# Fridge
+# Fridge [![Django CI](https://github.com/ChicoState/fridge/actions/workflows/django.yml/badge.svg)](https://github.com/ChicoState/fridge/actions/workflows/django.yml)
 
 # Purpose
 Fridge was created by Amritvir Randhawa, Andrew Moskowitz, Karandeep Dhillon, and Tamanna Haider for a Chico State Software Engineering project. When this group of students were asked, “What is a common problem you face that could be fixed with software?”, they had a plethora of thoughts on the matter. But they all agreed on one thing: keeping track of food items, tracking food waste, and budgeting were all difficult tasks, not just for college students, but for many households.
