@@ -1,5 +1,9 @@
+from datetime import date
+import profile
+
 from django.contrib.auth.models import User
 from django.db import models
+
 from PIL import Image
 
 
@@ -33,20 +37,20 @@ class Item(models.Model):
         ('Good', 'Good')
     )
        
-    author = models.ForeignKey(Profile, on_delete=models.CASCADE)
     food_type = models.CharField(max_length=100, choices=STATUS_CHOICES1)
     food_title = models.CharField(max_length=120)
     photos = models.ImageField(upload_to='uploaded_images/')
-    price = models.FloatField(default=0)
-    quantity = models.PositiveIntegerField(null=False, default=0)
-    valid_from = models.DateField(auto_now=False, auto_now_add=False)
-    valid_to = models.DateField(auto_now=False, auto_now_add=False)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    price = models.FloatField(blank=True, null=True, default=0)
+    quantity = models.PositiveIntegerField(blank=True, null=True, default=0)
+    valid_from = models.DateField(blank=True, null=True,auto_now=False, auto_now_add=False)
+    valid_to = models.DateField(blank=True, null=True,auto_now=False, auto_now_add=False)
+    timestamp = models.DateTimeField(blank=True, null=True,auto_now_add=True)
+    author = models.ForeignKey(Profile, default = "",on_delete=models.CASCADE)
     status = models.CharField(default='Good',max_length=100, choices=STATUS)
-    delta = models.IntegerField(null=False, default=0)
-    daystill = models.IntegerField(null=False, default=0)
-    humanize_time = models.IntegerField(null=False, default=0)
-    humanize_time1 = models.IntegerField(null=False, default=0)
+    delta = models.IntegerField(blank=True, null=True, default=0)
+    daystill = models.IntegerField(blank=True, null=True, default=0)
+    humanize_time = models.IntegerField(blank=True, null=True, default=0)
+    humanize_time1 = models.IntegerField(blank=True, null=True, default=0)
 
 
     class Meta:
